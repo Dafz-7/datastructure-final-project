@@ -73,6 +73,10 @@ public class SortedArray implements AutocompleteStructure{
         return results;
     }
 
+    public int size() {
+        return words.size();
+    }
+
 /*     private int findInitialPrefix(String prefix) {
 
     int low = 0;
