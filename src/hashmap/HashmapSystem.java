@@ -344,7 +344,7 @@ public class HashmapSystem {
             /*
              * Only return top 3 results.
              */
-            for (int i = 0; i < Math.min(3, list.size()); i++) {
+            for (int i = 0; i < list.size(); i++) {
 
                 res.add(list.get(i).getKey());
             }
