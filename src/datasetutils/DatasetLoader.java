@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class DatasetLoader {
 
-    public static void loadWords(
+    public static int loadWords(
             String filename,
             AutocompleteStructure structure) {
+
+        int wordCount = 0;
 
         try {
 
@@ -17,17 +19,21 @@ public class DatasetLoader {
 
             while (sc.hasNextLine()) {
 
-                String word = sc.nextLine();
+                String word = sc.nextLine().trim();
 
-                structure.insert(word);
+                if (!word.isEmpty()) {
+
+                    structure.insert(word);
+                    wordCount++;
+                }
             }
 
             sc.close();
 
-            System.out.println("Dataset loaded successfully.");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return wordCount;
     }
 }
