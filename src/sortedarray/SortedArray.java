@@ -64,9 +64,21 @@ public class SortedArray implements AutocompleteStructure{
             return results;
         }
 
-        for (String word : words) {
+        int startIndex = findInitialPrefix(prefix);
+
+        if (startIndex == -1) {
+            return results;
+        }
+
+        for (int i = startIndex; i < words.size(); i++) {
+
+            String word = words.get(i);
+
             if (word.startsWith(prefix)) {
                 results.add(word);
+            }
+            else {
+                break;
             }
         }
 
@@ -77,7 +89,7 @@ public class SortedArray implements AutocompleteStructure{
         return words.size();
     }
 
-/*     private int findInitialPrefix(String prefix) {
+    private int findInitialPrefix(String prefix) {
 
     int low = 0;
     int high = words.size() - 1;
@@ -105,5 +117,4 @@ public class SortedArray implements AutocompleteStructure{
 
     return result;
 }
- */
 }
