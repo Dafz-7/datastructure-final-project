@@ -9,12 +9,6 @@ import java.util.List;
 
 /*
  * UI FOR HASHMAP AUTOCOMPLETE SYSTEM
- *
- * Includes runtime testing for:
- * - Insert
- * - Delete
- * - Prefix Search
- * - Exact Word Search
  */
 
 public class HashUI {
@@ -45,12 +39,6 @@ public class HashUI {
             String line;
 
             /*
-             * START INSERT RUNTIME
-             */
-            long startInsertLoad =
-                    System.nanoTime();
-
-            /*
              * READ EACH WORD
              */
             while ((line = br.readLine()) != null) {
@@ -67,23 +55,10 @@ public class HashUI {
                 }
             }
 
-            /*
-             * END INSERT RUNTIME
-             */
-            long endInsertLoad =
-                    System.nanoTime();
-
             br.close();
 
-            double insertLoadMs =
-                    (endInsertLoad
-                            - startInsertLoad)
-                            / 1_000_000.0;
-
             System.out.println(
-                    "File Insert Runtime: "
-                            + insertLoadMs
-                            + " ms"
+                    "Dataset loaded successfully."
             );
 
         } catch (IOException e) {
@@ -261,27 +236,8 @@ public class HashUI {
                                     return;
                                 }
 
-                                /*
-                                 * PREFIX SEARCH RUNTIME
-                                 */
-                                long start =
-                                        System.nanoTime();
-
                                 List<String> result =
                                         ac.search(text);
-
-                                long end =
-                                        System.nanoTime();
-
-                                double ms =
-                                        (end - start)
-                                                / 1_000_000.0;
-
-                                System.out.println(
-                                        "Prefix Search Runtime: "
-                                                + ms
-                                                + " ms"
-                                );
 
                                 /*
                                  * NO RESULTS
@@ -338,26 +294,7 @@ public class HashUI {
                 return;
             }
 
-            /*
-             * INSERT RUNTIME
-             */
-            long start =
-                    System.nanoTime();
-
             ac.insert(text, 1);
-
-            long end =
-                    System.nanoTime();
-
-            double ms =
-                    (end - start)
-                            / 1_000_000.0;
-
-            System.out.println(
-                    "Insert Runtime: "
-                            + ms
-                            + " ms"
-            );
 
             statusLabel.setText(
                     "Inserted: " + text
@@ -388,26 +325,7 @@ public class HashUI {
                 return;
             }
 
-            /*
-             * DELETE RUNTIME
-             */
-            long start =
-                    System.nanoTime();
-
             ac.remove(text);
-
-            long end =
-                    System.nanoTime();
-
-            double ms =
-                    (end - start)
-                            / 1_000_000.0;
-
-            System.out.println(
-                    "Delete Runtime: "
-                            + ms
-                            + " ms"
-            );
 
             statusLabel.setText(
                     "Removed: " + text
@@ -438,28 +356,9 @@ public class HashUI {
                 return;
             }
 
-            /*
-             * EXACT SEARCH RUNTIME
-             */
-            long start =
-                    System.nanoTime();
-
             boolean found =
                     ac.lookup(text)
                             .containsKey(text);
-
-            long end =
-                    System.nanoTime();
-
-            double ms =
-                    (end - start)
-                            / 1_000_000.0;
-
-            System.out.println(
-                    "Exact Word Search Runtime: "
-                            + ms
-                            + " ms"
-            );
 
             /*
              * DISPLAY RESULT
