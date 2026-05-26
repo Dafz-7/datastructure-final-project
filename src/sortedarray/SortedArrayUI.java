@@ -31,7 +31,7 @@ public class SortedArrayUI extends JFrame {
         sortedArray = new SortedArray();
 
         DatasetLoader.loadWords(
-                "datastructure-final-project\\dataset\\words_1000.txt",
+                "dataset\\words_100.txt",
                 sortedArray
         );
 
