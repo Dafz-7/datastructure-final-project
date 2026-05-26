@@ -15,7 +15,7 @@ import java.util.*;
  * application
  */
 
-public class HashmapSystem{
+public class HashmapSystem {
 
     /*
      * MAIN DATA STRUCTURE

@@ -30,9 +30,9 @@ public class TrieUI extends JFrame {
         trie = new Trie();
 
         DatasetLoader.loadWords(
-                "dataset/words_100.txt",
+                "dataset/words_1000.txt",
                 trie
-        );
+        );a
 
         // =====================================
         // Window Settings

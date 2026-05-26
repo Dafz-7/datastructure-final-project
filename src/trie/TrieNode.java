@@ -1,15 +1,15 @@
 package trie;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class TrieNode {
 
-    HashMap<Character, TrieNode> children;
+    TreeMap<Character, TrieNode> children;
 
     boolean isEndOfWord;
 
     public TrieNode() {
-        children = new HashMap<>();
+        children = new TreeMap<>();
         isEndOfWord = false;
     }
 }
