@@ -1,142 +1,158 @@
 package sortedarray;
 
 import java.io.File;
-import java.util.List;
 import java.util.Scanner;
 
 public class testingrenji {
+
+        private static final int ITERATIONS = 10000;
+
         public static void main(String[] args) throws Exception {
 
-                SortedArray sa = new SortedArray();
+                String[] datasets = {
+                                "words_100.txt",
+                                "words_1000.txt",
+                                "words_10000.txt",
+                                "words_20000.txt",
+                                "words_50000.txt",
+                                "words_75000.txt",
+                                "words_100000.txt",
+                                "words_200000.txt",
+                                "words_300000.txt"
+                };
 
-                // Load dataset
-                Scanner sc = new Scanner(
-                        new File("src/dataset/words_100.txt"));
+                System.out.printf(
+                                "%-15s %-12s %-12s %-12s %-12s %-12s %-12s%n",
+                                "Dataset",
+                                "Load(ms)",
+                                "Search(ns)",
+                                "Prefix(ns)",
+                                "Insert(ns)",
+                                "Delete(ns)",
+                                "Memory(MB)");
 
-                while (sc.hasNextLine()) {
-                        sa.insert(sc.nextLine());
+                System.out.println(
+                                "---------------------------------------------------------------------------------------------");
+
+                for (String dataset : datasets) {
+
+                        SortedArray sa = new SortedArray();
+
+                        // ==========================
+                        // LOAD DATASET
+                        // ==========================
+
+                        long startLoad = System.nanoTime();
+
+                        Scanner sc = new Scanner(
+                                        new File("dataset\\" + dataset));
+
+                        while (sc.hasNextLine()) {
+                                sa.insert(sc.nextLine());
+                        }
+
+                        sc.close();
+
+                        long endLoad = System.nanoTime();
+
+                        double loadTime = (endLoad - startLoad)
+                                        / 1_000_000.0;
+
+                        // ==========================
+                        // MEMORY
+                        // ==========================
+
+                        Runtime runtime = Runtime.getRuntime();
+
+                        runtime.gc();
+
+                        long usedMemory = runtime.totalMemory()
+                                        - runtime.freeMemory();
+
+                        double memoryMB = usedMemory
+                                        / (1024.0 * 1024.0);
+
+                        // ==========================
+                        // SEARCH
+                        // ==========================
+
+                        long startSearch = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                sa.search("antineutrino");
+                        }
+
+                        long endSearch = System.nanoTime();
+
+                        double avgSearch = (endSearch - startSearch)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // PREFIX SEARCH
+                        // ==========================
+
+                        long startPrefix = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                sa.getSuggestions("ac");
+                        }
+
+                        long endPrefix = System.nanoTime();
+
+                        double avgPrefix = (endPrefix - startPrefix)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // INSERT
+                        // ==========================
+
+                        long startInsert = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                sa.insert(
+                                                "benchmarkInsert"
+                                                                + i);
+                        }
+
+                        long endInsert = System.nanoTime();
+
+                        double avgInsert = (endInsert - startInsert)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // DELETE
+                        // ==========================
+
+                        long startDelete = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                sa.delete(
+                                                "benchmarkInsert"
+                                                                + i);
+                        }
+
+                        long endDelete = System.nanoTime();
+
+                        double avgDelete = (endDelete - startDelete)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // PRINT RESULT ROW
+                        // ==========================
+
+                        System.out.printf(
+                                        "%-15s %-12.3f %-12.2f %-12.2f %-12.2f %-12.2f %-12.2f%n",
+                                        dataset,
+                                        loadTime,
+                                        avgSearch,
+                                        avgPrefix,
+                                        avgInsert,
+                                        avgDelete,
+                                        memoryMB);
                 }
-
-                sc.close();
-
-                System.out.println("=== SORTED ARRAY TESTING ===\n");
-
-                // --------------------------------------------------
-                // DATASET LOAD TEST
-                // --------------------------------------------------
-
-                System.out.println("Dataset Size: " + sa.size());
-
-                // --------------------------------------------------
-                // SEARCH TESTS
-                // --------------------------------------------------
-
-                System.out.println("\n=== SEARCH TESTS ===");
-
-                System.out.println(
-                        "acceptilating -> "
-                                + sa.search("acceptilating"));
-
-                System.out.println(
-                        "antineutrino -> "
-                                + sa.search("antineutrino"));
-
-                System.out.println(
-                        "apple -> "
-                                + sa.search("apple"));
-
-                // --------------------------------------------------
-                // INSERT TESTS
-                // --------------------------------------------------
-
-                System.out.println("\n=== INSERT TESTS ===");
-
-                System.out.println(
-                        "Before insert apple: "
-                                + sa.search("apple"));
-
-                sa.insert("apple");
-
-                System.out.println(
-                        "After insert apple: "
-                                + sa.search("apple"));
-
-                System.out.println(
-                        "Size after insert: "
-                                + sa.size());
-
-                // --------------------------------------------------
-                // DUPLICATE TEST
-                // --------------------------------------------------
-
-                System.out.println("\n=== DUPLICATE TEST ===");
-
-                int beforeDuplicate = sa.size();
-
-                sa.insert("apple");
-
-                int afterDuplicate = sa.size();
-
-                System.out.println(
-                        "Size before duplicate insert: "
-                                + beforeDuplicate);
-
-                System.out.println(
-                        "Size after duplicate insert: "
-                                + afterDuplicate);
-
-                // --------------------------------------------------
-                // DELETE TESTS
-                // --------------------------------------------------
-
-                System.out.println("\n=== DELETE TESTS ===");
-
-                System.out.println(
-                        "Before delete antineutrino: "
-                                + sa.search("antineutrino"));
-
-                sa.delete("antineutrino");
-
-                System.out.println(
-                        "After delete antineutrino: "
-                                + sa.search("antineutrino"));
-
-                System.out.println(
-                        "Size after delete: "
-                                + sa.size());
-
-                // --------------------------------------------------
-                // SUGGESTION TESTS
-                // --------------------------------------------------
-
-                System.out.println("\n=== SUGGESTION TESTS ===");
-
-                List<String> suggestions;
-
-                suggestions = sa.getSuggestions("ac");
-
-                System.out.println("\nSuggestions for 'ac':");
-
-                for (String word : suggestions) {
-                        System.out.println(word);
-                }
-
-                suggestions = sa.getSuggestions("ant");
-
-                System.out.println("\nSuggestions for 'ant':");
-
-                for (String word : suggestions) {
-                        System.out.println(word);
-                }
-
-                suggestions = sa.getSuggestions("xyz");
-
-                System.out.println("\nSuggestions for 'xyz':");
-
-                if (suggestions.isEmpty()) {
-                System.out.println("No suggestions found.");
-                }
-
-                System.out.println("\n=== TESTING COMPLETE ===");
         }
 }
