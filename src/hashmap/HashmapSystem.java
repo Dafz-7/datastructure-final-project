@@ -203,7 +203,7 @@ public class HashmapSystem {
                 list,
                 new ValueThenKeyComparator<String, Integer>());
 
-        for (int i = 0; i < Math.min(5, list.size()); i++) {
+        for (int i = 0; i < list.size(); i++) {
 
             res.add(
                     list.get(i).getKey());
@@ -276,81 +276,5 @@ public class HashmapSystem {
 
             insert(words[i], times[i]);
         }
-    }
-
-    /*
-     * Stores what the user is currently typing.
-     *
-     * Example:
-     *
-     * Typing:
-     * a -> "a"
-     * p -> "ap"
-     * p -> "app"
-     */
-    String current = "";
-
-    /*
-     * INPUT METHOD
-     *
-     * Called every time the user types a character.
-     *
-     * Example:
-     * input('a')
-     * input('p')
-     * input('p')
-     */
-    public List<String> input(char c) {
-
-        // Stores autocomplete results
-        List<String> res = new ArrayList<>();
-
-        /*
-         * If user types '#'
-         *
-         * This means:
-         * finish word and save it.
-         */
-        if (c == '#') {
-
-            // Insert typed word into system
-            insert(current, 1);
-
-            // Reset current word
-            current = "";
-
-        } else {
-
-            /*
-             * Add typed character
-             * to current word.
-             */
-            current += c;
-
-            /*
-             * Get all matching words
-             * for the current prefix.
-             */
-            List<Map.Entry<String, Integer>> list = new ArrayList<>(
-                    lookup(current).entrySet());
-
-            /*
-             * Sort words using custom comparator.
-             */
-            Collections.sort(
-                    list,
-                    new ValueThenKeyComparator<String, Integer>());
-
-            /*
-             * Only return top 3 results.
-             */
-            for (int i = 0; i < list.size(); i++) {
-
-                res.add(list.get(i).getKey());
-            }
-        }
-
-        // Return autocomplete suggestions
-        return res;
     }
 }
