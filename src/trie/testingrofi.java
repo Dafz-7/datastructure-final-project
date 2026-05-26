@@ -4,89 +4,149 @@ import datasetutils.DatasetLoader;
 
 public class testingrofi {
 
-    public static void main(String[] args) {
+        private static final int ITERATIONS = 10000;
 
-        Trie trie = new Trie();
+        public static void main(String[] args) {
 
-        // =====================================
-        // Load dataset
-        // =====================================
-        DatasetLoader.loadWords(
-                "dataset/words_100.txt",
-                trie
-        );
+                String[] datasets = {
+                                "words_100.txt",
+                                "words_1000.txt",
+                                "words_10000.txt",
+                                "words_20000.txt",
+                                "words_50000.txt",
+                                "words_75000.txt",
+                                "words_100000.txt",
+                                "words_200000.txt",
+                                "words_300000.txt"
+                };
 
-        System.out.println("Dataset loaded.\n");
+                System.out.printf(
+                                "%-15s %-12s %-12s %-12s %-12s %-12s %-12s%n",
+                                "Dataset",
+                                "Load(ms)",
+                                "Search(ns)",
+                                "Prefix(ns)",
+                                "Insert(ns)",
+                                "Delete(ns)",
+                                "Memory(MB)");
 
-        // =====================================
-        // INSERT TEST
-        // =====================================
-        trie.insert("apple");
-        trie.insert("application");
-        trie.insert("approve");
+                System.out.println(
+                                "---------------------------------------------------------------------------------------------");
 
-        System.out.println("Inserted custom words.\n");
+                for (String dataset : datasets) {
 
-        // =====================================
-        // SEARCH TEST
-        // =====================================
-        System.out.println("SEARCH TEST");
+                        Trie trie = new Trie();
 
-        System.out.println(
-                "apple -> " +
-                trie.search("apple")
-        );
+                        // ==========================
+                        // LOAD DATASET
+                        // ==========================
 
-        System.out.println(
-                "app -> " +
-                trie.search("app")
-        );
+                        long startLoad = System.nanoTime();
 
-        System.out.println(
-                "banana -> " +
-                trie.search("banana")
-        );
+                        DatasetLoader.loadWords(
+                                        "dataset/" + dataset,
+                                        trie);
 
-        System.out.println();
+                        long endLoad = System.nanoTime();
 
-        // =====================================
-        // SUGGESTION TEST
-        // =====================================
-        System.out.println("SUGGESTION TEST");
+                        double loadTime = (endLoad - startLoad)
+                                        / 1_000_000.0;
 
-        System.out.println(
-                "Suggestions for 'ap': "
-                + trie.getSuggestions("ap")
-        );
+                        // ==========================
+                        // MEMORY
+                        // ==========================
 
-        System.out.println();
+                        Runtime runtime = Runtime.getRuntime();
 
-        // =====================================
-        // DELETE TEST
-        // =====================================
-        System.out.println("DELETE TEST");
+                        runtime.gc();
 
-        System.out.println(
-                "Before delete apple: "
-                + trie.search("apple")
-        );
+                        long usedMemory = runtime.totalMemory()
+                                        - runtime.freeMemory();
 
-        trie.delete("apple");
+                        double memoryMB = usedMemory
+                                        / (1024.0 * 1024.0);
 
-        System.out.println(
-                "After delete apple: "
-                + trie.search("apple")
-        );
+                        // ==========================
+                        // SEARCH
+                        // ==========================
 
-        System.out.println();
+                        long startSearch = System.nanoTime();
 
-        // =====================================
-        // SUGGESTION AFTER DELETE
-        // =====================================
-        System.out.println("SUGGESTIONS AFTER DELETE");
+                        for (int i = 0; i < ITERATIONS; i++) {
 
-        System.out.println(
-                trie.getSuggestions("ap")
-        );
-    }
+                                trie.search("apple");
+                        }
+
+                        long endSearch = System.nanoTime();
+
+                        double avgSearch = (endSearch - startSearch)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // PREFIX SEARCH
+                        // ==========================
+
+                        long startPrefix = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                trie.getSuggestions("ap");
+                        }
+
+                        long endPrefix = System.nanoTime();
+
+                        double avgPrefix = (endPrefix - startPrefix)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // INSERT
+                        // ==========================
+
+                        long startInsert = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                trie.insert(
+                                                "benchmarkInsert"
+                                                                + i);
+                        }
+
+                        long endInsert = System.nanoTime();
+
+                        double avgInsert = (endInsert - startInsert)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // DELETE
+                        // ==========================
+
+                        long startDelete = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                trie.delete(
+                                                "benchmarkInsert"
+                                                                + i);
+                        }
+
+                        long endDelete = System.nanoTime();
+
+                        double avgDelete = (endDelete - startDelete)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // PRINT RESULT
+                        // ==========================
+
+                        System.out.printf(
+                                        "%-15s %-12.3f %-12.2f %-12.2f %-12.2f %-12.2f %-12.2f%n",
+                                        dataset,
+                                        loadTime,
+                                        avgSearch,
+                                        avgPrefix,
+                                        avgInsert,
+                                        avgDelete,
+                                        memoryMB);
+                }
+        }
 }
