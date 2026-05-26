@@ -1,188 +1,152 @@
 package hashmap;
 
-
-import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.io.*;
-
-/*
- * MAIN CLASS
- *
- * Used for testing the autocomplete system.
- */
+import datasetutils.DatasetLoader;
 
 public class testingfebri {
 
+        private static final int ITERATIONS = 10000;
+
         public static void main(String[] args) {
 
-                HashmapSystem ac = new HashmapSystem(
-                                new String[] {},
-                                new int[] {});
+                String[] datasets = {
+                                "words_100.txt",
+                                "words_1000.txt",
+                                "words_10000.txt",
+                                "words_20000.txt",
+                                "words_50000.txt",
+                                "words_75000.txt",
+                                "words_100000.txt",
+                                "words_200000.txt",
+                                "words_300000.txt"
+                };
 
-                try {
+                System.out.printf(
+                                "%-15s %-12s %-12s %-12s %-12s %-12s %-12s%n",
+                                "Dataset",
+                                "Load(ms)",
+                                "Search(ns)",
+                                "Prefix(ns)",
+                                "Insert(ns)",
+                                "Delete(ns)",
+                                "Memory(MB)");
 
-                        /*
-                         * Read words.txt
-                         */
+                System.out.println(
+                                "---------------------------------------------------------------------------------------------");
 
-                        BufferedReader br = new BufferedReader(
-                                        new FileReader("words_10000.txt"));
+                for (String dataset : datasets) {
 
-                        String line;
+                        HashmapAdapter hashmap = new HashmapAdapter();
 
-                        /*
-                         * Read every line
-                         */
-                        while ((line = br.readLine()) != null) {
+                        // ==========================
+                        // LOAD DATASET
+                        // ==========================
 
-                                /*
-                                 * Remove extra spaces
-                                 */
-                                line = line.trim();
+                        long startLoad = System.nanoTime();
 
-                                /*
-                                 * Ignore empty lines
-                                 */
-                                if (!line.isEmpty()) {
+                        DatasetLoader.loadWords(
+                                        "dataset/" + dataset,
+                                        hashmap);
 
-                                        /*
-                                         * Insert word
-                                         */
-                                        ac.insert(line, 1);
-                                }
+                        long endLoad = System.nanoTime();
+
+                        double loadTime = (endLoad - startLoad)
+                                        / 1_000_000.0;
+
+                        // ==========================
+                        // MEMORY
+                        // ==========================
+
+                        Runtime runtime = Runtime.getRuntime();
+
+                        runtime.gc();
+
+                        long usedMemory = runtime.totalMemory()
+                                        - runtime.freeMemory();
+
+                        double memoryMB = usedMemory
+                                        / (1024.0 * 1024.0);
+
+                        // ==========================
+                        // SEARCH
+                        // ==========================
+
+                        long startSearch = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                hashmap.search("apple");
                         }
 
+                        long endSearch = System.nanoTime();
 
-                        br.close();
+                        double avgSearch = (endSearch - startSearch)
+                                        / (double) ITERATIONS;
 
-                } catch (IOException e) {
+                        // ==========================
+                        // PREFIX SEARCH
+                        // ==========================
 
-                        System.out.println(
-                                        "Error reading file.");
+                        long startPrefix = System.nanoTime();
 
-                        e.printStackTrace();
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                hashmap.getSuggestions("ap");
+                        }
+
+                        long endPrefix = System.nanoTime();
+
+                        double avgPrefix = (endPrefix - startPrefix)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // INSERT
+                        // ==========================
+
+                        long startInsert = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                hashmap.insert(
+                                                "benchmarkInsert"
+                                                                + i);
+                        }
+
+                        long endInsert = System.nanoTime();
+
+                        double avgInsert = (endInsert - startInsert)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // DELETE
+                        // ==========================
+
+                        long startDelete = System.nanoTime();
+
+                        for (int i = 0; i < ITERATIONS; i++) {
+
+                                hashmap.delete(
+                                                "benchmarkInsert"
+                                                                + i);
+                        }
+
+                        long endDelete = System.nanoTime();
+
+                        double avgDelete = (endDelete - startDelete)
+                                        / (double) ITERATIONS;
+
+                        // ==========================
+                        // PRINT RESULT
+                        // ==========================
+
+                        System.out.printf(
+                                        "%-15s %-12.3f %-12.2f %-12.2f %-12.2f %-12.2f %-12.2f%n",
+                                        dataset,
+                                        loadTime,
+                                        avgSearch,
+                                        avgPrefix,
+                                        avgInsert,
+                                        avgDelete,
+                                        memoryMB);
                 }
-
-                /*
-                 * CREATE WINDOW
-                 */
-                JFrame frame = new JFrame("Autocomplete System");
-
-                frame.setSize(400, 300);
-
-                frame.setDefaultCloseOperation(
-                                JFrame.EXIT_ON_CLOSE);
-
-                frame.setLayout(
-                                new BorderLayout());
-
-                /*
-                 * TEXT FIELD
-                 *
-                 * User types here
-                 */
-                JTextField textField = new JTextField();
-
-                /*
-                 * AREA TO DISPLAY SUGGESTIONS
-                 */
-                JTextArea suggestions = new JTextArea();
-
-                suggestions.setEditable(false);
-
-                /*
-                 * IMPORTANT CHANGE
-                 *
-                 * Detect every key press instantly.
-                 */
-                textField.addKeyListener(
-
-                                new KeyAdapter() {
-
-                                        public void keyReleased(
-                                                        KeyEvent e) {
-
-                                                /*
-                                                 * Current text
-                                                 */
-                                                String text = textField.getText();
-
-                                                /*
-                                                 * ENTER KEY
-                                                 *
-                                                 * Insert word
-                                                 */
-                                                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-
-                                                        ac.insert(text, 1);
-
-                                                        suggestions.setText(
-                                                                        "Inserted: " + text);
-
-                                                        textField.setText("");
-
-                                                        return;
-                                                }
-
-                                                /*
-                                                 * DELETE KEY
-                                                 *
-                                                 * Remove word
-                                                 */
-                                                if (e.isControlDown()
-                                                                && e.getKeyCode() == KeyEvent.VK_D) {
-
-                                                        ac.remove(text);
-
-                                                        suggestions.setText(
-                                                                        "Removed: " + text);
-
-                                                        textField.setText("");
-
-                                                        return;
-                                                }
-
-                                                /*
-                                                 * Show autocomplete suggestions
-                                                 */
-                                                java.util.List<String> result = ac.search(text);
-
-                                                /*
-                                                 * Clear old suggestions
-                                                 */
-                                                suggestions.setText("");
-
-                                                /*
-                                                 * Display suggestions
-                                                 */
-                                                for (String word : result) {
-
-                                                        suggestions.append(
-                                                                        word + "\n");
-                                                }
-                                        }
-                                });
-                /*
-                 * Add components to window
-                 */
-                frame.add(
-                                textField,
-                                BorderLayout.NORTH);
-
-                frame.add(
-                                new JScrollPane(suggestions),
-                                BorderLayout.CENTER);
-
-                /*
-                 * Show window
-                 */
-                frame.setVisible(true);
-
-                /*
-                 * Automatically focus cursor
-                 * into text field
-                 */
-                textField.requestFocusInWindow();
         }
 }
