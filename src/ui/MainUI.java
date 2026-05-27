@@ -7,6 +7,8 @@ import sortedarray.SortedArray;
 import trie.Trie;
 import hashmap.HashmapAdapter;
 import datasetutils.DatasetLoader;
+import benchmark.BenchmarkResult;
+import benchmark.BenchmarkRunner;
 
 
 
@@ -27,6 +29,7 @@ public class MainUI extends JFrame {
     private JButton insertButton;
     private JButton deleteButton;
     private JButton clearButton;
+    private JButton benchmarkButton;
 
     public MainUI() {
 
@@ -80,6 +83,8 @@ public class MainUI extends JFrame {
         insertButton = new JButton("Insert");
 
         deleteButton = new JButton("Delete");
+
+        benchmarkButton = new JButton("Run Benchmark");
 
         resultsArea.setEditable(false);
 
@@ -176,6 +181,14 @@ public class MainUI extends JFrame {
         autocompletePanel.add(suggestionsButton);
 
         panel.add(autocompletePanel);
+
+        panel.add(autocompletePanel);
+
+        JPanel benchmarkPanel = new JPanel();
+
+        benchmarkPanel.add(benchmarkButton);
+
+        panel.add(benchmarkPanel);
 
         JPanel resultsControlPanel = new JPanel();
 
@@ -365,6 +378,8 @@ deleteButton.addActionListener(e -> {
     );
 });
 
+//Suggestion Button
+
 suggestionsButton.addActionListener(e -> {
 
     if (currentStructure == null) {
@@ -416,6 +431,116 @@ suggestionsButton.addActionListener(e -> {
         }
         resultsArea.setCaretPosition(0);
     }
+});
+
+// Benchmark Button
+
+benchmarkButton.addActionListener(e -> {
+
+    String selectedStructure =
+            (String) structureBox.getSelectedItem();
+
+    String selectedDataset =
+            (String) datasetBox.getSelectedItem();
+
+    String path =
+            "dataset/" + selectedDataset;
+
+    AutocompleteStructure benchmarkStructure =
+            null;
+
+    switch (selectedStructure) {
+
+        case "Sorted Array":
+
+            benchmarkStructure =
+                    new SortedArray();
+
+            break;
+
+        case "HashMap":
+
+            benchmarkStructure =
+                    new HashmapAdapter();
+
+            break;
+
+        case "Trie":
+
+            benchmarkStructure =
+                    new Trie();
+
+            break;
+    }
+
+    BenchmarkResult result =
+            BenchmarkRunner.runBenchmark(
+                    benchmarkStructure,
+                    path,
+                    selectedDataset
+            );
+
+    resultsArea.setText("");
+
+    resultsArea.append(
+            "========== BENCHMARK ==========\n\n"
+    );
+
+    resultsArea.append(
+            "Structure: "
+                    + selectedStructure
+                    + "\n"
+    );
+
+    resultsArea.append(
+            "Dataset: "
+                    + result.datasetName
+                    + "\n\n"
+    );
+
+    resultsArea.append(
+            String.format(
+                    "Load Time: %.3f ms\n",
+                    result.loadTime
+            )
+    );
+
+    resultsArea.append(
+            String.format(
+                    "Average Search: %.2f ns\n",
+                    result.avgSearch
+            )
+    );
+
+    resultsArea.append(
+            String.format(
+                    "Average Prefix: %.2f ns\n",
+                    result.avgPrefix
+            )
+    );
+
+    resultsArea.append(
+            String.format(
+                    "Average Insert: %.2f ns\n",
+                    result.avgInsert
+            )
+    );
+
+    resultsArea.append(
+            String.format(
+                    "Average Delete: %.2f ns\n",
+                    result.avgDelete
+            )
+    );
+
+    resultsArea.append(
+            String.format(
+                    "Memory Usage: %.2f MB\n",
+                    result.memoryMB
+            )
+    );
+
+    resultsArea.setCaretPosition(0);
 });
 
     clearButton.addActionListener(e -> {
