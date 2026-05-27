@@ -74,7 +74,7 @@ public class testingfebri {
 
                         for (int i = 0; i < ITERATIONS; i++) {
 
-                                hashmap.search("apple");
+                                hashmap.search("antineutrino");
                         }
 
                         long endSearch = System.nanoTime();
@@ -90,7 +90,7 @@ public class testingfebri {
 
                         for (int i = 0; i < ITERATIONS; i++) {
 
-                                hashmap.getSuggestions("ap");
+                                hashmap.getSuggestions("sh");
                         }
 
                         long endPrefix = System.nanoTime();

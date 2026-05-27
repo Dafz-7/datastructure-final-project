@@ -74,7 +74,7 @@ public class testingrofi {
 
                         for (int i = 0; i < ITERATIONS; i++) {
 
-                                trie.search("apple");
+                                trie.search("antineutrino");
                         }
 
                         long endSearch = System.nanoTime();
@@ -90,7 +90,7 @@ public class testingrofi {
 
                         for (int i = 0; i < ITERATIONS; i++) {
 
-                                trie.getSuggestions("ap");
+                                trie.getSuggestions("sh");
                         }
 
                         long endPrefix = System.nanoTime();

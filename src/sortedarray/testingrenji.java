@@ -96,7 +96,7 @@ public class testingrenji {
 
                         for (int i = 0; i < ITERATIONS; i++) {
 
-                                sa.getSuggestions("ac");
+                                sa.getSuggestions("sh");
                         }
 
                         long endPrefix = System.nanoTime();
