@@ -56,16 +56,16 @@ public class HashmapSystem {
     public void insert(String s, int times) {
 
         // Used to build prefixes character by character
-        String str = "";
+        StringBuilder sb = new StringBuilder();
 
         // Loop through every character in the word
         for (int i = 0; i < s.length(); i++) {
 
-            // Current character
-            char c = s.charAt(i);
-
             // Add character to current prefix
-            str += c;
+            sb.append(s.charAt(i));
+
+            // StringBuilder to String
+            String str = sb.toString();
 
             /*
              * If prefix does not exist yet,
@@ -104,14 +104,17 @@ public class HashmapSystem {
 
     public void remove(String s) {
 
-        String str = "";
+        // Used to build prefixes character by character
+        StringBuilder sb = new StringBuilder();
 
-        /*
-         * Go through every prefix
-         */
+        // Loop through every character in the word
         for (int i = 0; i < s.length(); i++) {
 
-            str += s.charAt(i);
+            // Add character to current prefix
+            sb.append(s.charAt(i));
+
+            // StringBuilder to String
+            String str = sb.toString();
 
             /*
              * If prefix exists
