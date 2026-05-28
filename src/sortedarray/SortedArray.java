@@ -1,40 +1,59 @@
 package sortedarray;
+
 import java.util.*;
 
-import interfaces.AutocompleteStructure;
+import interfaces.*;
 
-public class SortedArray implements AutocompleteStructure{
-    
+public class SortedArray implements AutocompleteStructure {
+
     private ArrayList<String> words;
 
     public SortedArray() {
         words = new ArrayList<>();
     }
 
-    @Override
-    public void insert(String word) {
-        if (word == null || word.isEmpty()) {
-            return;
+    // =========================
+    // BULK LOAD METHOD
+    // =========================
+    public void loadDataset(List<String> dataset) {
+
+        // Add all words unsorted
+        for (String word : dataset) {
+
+            if (word != null && !word.isEmpty()) {
+                words.add(word);
+            }
         }
 
-        int position = 0;
+        // Sort entire dataset once
+        Collections.sort(words);
 
-        while (position < words.size() && words.get(position).compareTo(word) < 0) {
-            position++;
-        }
-
-        if (position < words.size() && words.get(position).equals(word)) {
-            return;
-        }
-
-        words.add(position,word);
     }
 
+    // =========================
+    // NORMAL INSERT
+    // =========================
     @Override
-    public void delete(String word) {
+    public void insert(String word) {
+
         if (word == null || word.isEmpty()) {
             return;
         }
+
+        int index = Collections.binarySearch(words, word);
+
+        if (index >= 0) {
+            return;
+        }
+
+        words.add(-(index + 1), word);
+    }
+
+    // =========================
+    // DELETE
+    // =========================
+    @Override
+    public void delete(String word) {
 
         int index = Collections.binarySearch(words, word);
 
@@ -43,26 +62,22 @@ public class SortedArray implements AutocompleteStructure{
         }
     }
 
-
-
+    // =========================
+    // SEARCH
+    // =========================
     @Override
     public boolean search(String word) {
-
-        if (word == null || word.isEmpty()) {
-        return false;
-        }
 
         return Collections.binarySearch(words, word) >= 0;
     }
 
+    // =========================
+    // GET SUGGESTIONS
+    // =========================
     @Override
     public List<String> getSuggestions(String prefix) {
 
         List<String> results = new ArrayList<>();
-
-        if (prefix == null || prefix.isEmpty()) {
-            return results;
-        }
 
         int startIndex = findInitialPrefix(prefix);
 
@@ -76,8 +91,7 @@ public class SortedArray implements AutocompleteStructure{
 
             if (word.startsWith(prefix)) {
                 results.add(word);
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -85,36 +99,36 @@ public class SortedArray implements AutocompleteStructure{
         return results;
     }
 
-    public int size() {
-        return words.size();
-    }
-
+    // =========================
+    // FIND FIRST PREFIX
+    // =========================
     private int findInitialPrefix(String prefix) {
 
-    int low = 0;
-    int high = words.size() - 1;
-    int result = -1;
+        int low = 0;
+        int high = words.size() - 1;
+        int result = -1;
 
-    while (low <= high) {
+        while (low <= high) {
 
-        int mid = (low + high) / 2;
-        String word = words.get(mid);
+            int mid = (low + high) / 2;
 
-        if (word.startsWith(prefix)) {
+            String word = words.get(mid);
 
-            result = mid;
-            high = mid - 1;
+            if (word.startsWith(prefix)) {
 
-        } else if (word.compareTo(prefix) < 0) {
+                result = mid;
+                high = mid - 1;
 
-            low = mid + 1;
+            } else if (word.compareTo(prefix) < 0) {
 
-        } else {
+                low = mid + 1;
 
-            high = mid - 1;
+            } else {
+
+                high = mid - 1;
+            }
         }
-    }
 
-    return result;
-}
+        return result;
+    }
 }
