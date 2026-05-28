@@ -2,16 +2,12 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+
 import interfaces.AutocompleteStructure;
 import sortedarray.SortedArray;
 import trie.Trie;
 import hashmap.HashmapAdapter;
 import datasetutils.DatasetLoader;
-import benchmark.BenchmarkResult;
-import benchmark.BenchmarkRunner;
-
-
-
 
 public class MainUI extends JFrame {
 
@@ -29,7 +25,6 @@ public class MainUI extends JFrame {
     private JButton insertButton;
     private JButton deleteButton;
     private JButton clearButton;
-    private JButton benchmarkButton;
 
     public MainUI() {
 
@@ -41,7 +36,10 @@ public class MainUI extends JFrame {
 
         setLocationRelativeTo(null);
 
-        // Create components
+        // ==========================================
+        // COMPONENTS
+        // ==========================================
+
         structureBox = new JComboBox<>(
                 new String[]{
                         "Sorted Array",
@@ -64,89 +62,96 @@ public class MainUI extends JFrame {
 
         loadButton = new JButton("Load Dataset");
 
-        structureInfoLabel = new JLabel("No dataset loaded");
+        structureInfoLabel =
+                new JLabel("No dataset loaded");
 
-        runtimeLabel = new JLabel("Load Time: N/A");
+        runtimeLabel =
+                new JLabel("Load Time: N/A");
 
-        wordField = new JTextField(15);
+        wordField =
+                new JTextField(15);
 
-        searchButton = new JButton("Search");
+        searchButton =
+                new JButton("Search");
 
-        resultsArea = new JTextArea(12, 50);
+        resultsArea =
+                new JTextArea(12, 50);
 
-        prefixField = new JTextField(15);
+        prefixField =
+                new JTextField(15);
 
-        suggestionsButton = new JButton("Get Suggestions");
+        suggestionsButton =
+                new JButton("Get Suggestions");
 
-        clearButton = new JButton("Clear Results");
+        clearButton =
+                new JButton("Clear Results");
 
-        insertButton = new JButton("Insert");
+        insertButton =
+                new JButton("Insert");
 
-        deleteButton = new JButton("Delete");
-
-        benchmarkButton = new JButton("Run Benchmark");
+        deleteButton =
+                new JButton("Delete");
 
         resultsArea.setEditable(false);
 
+        // ==========================================
+        // MAIN PANEL
+        // ==========================================
+
         JPanel panel = new JPanel();
 
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(
+                new BoxLayout(
+                        panel,
+                        BoxLayout.Y_AXIS));
+
+        // ==========================================
+        // DATASET PANEL
+        // ==========================================
 
         JPanel datasetPanel = new JPanel();
 
-        datasetPanel.add(new JLabel("Structure:"));
+        datasetPanel.add(
+                new JLabel("Structure:"));
+
         datasetPanel.add(structureBox);
 
-        datasetPanel.add(new JLabel("Dataset:"));
+        datasetPanel.add(
+                new JLabel("Dataset:"));
+
         datasetPanel.add(datasetBox);
 
         datasetPanel.add(loadButton);
 
         panel.add(datasetPanel);
 
+        // ==========================================
+        // STATUS PANEL
+        // ==========================================
+
         JPanel statusPanel = new JPanel();
 
-        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
+        statusPanel.setLayout(
+                new BoxLayout(
+                        statusPanel,
+                        BoxLayout.Y_AXIS));
 
-        structureInfoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        structureInfoLabel.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
 
-        runtimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        runtimeLabel.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
 
-        statusPanel.add(structureInfoLabel);
+        statusPanel.add(
+                structureInfoLabel);
 
         statusPanel.add(runtimeLabel);
 
         panel.add(statusPanel);
 
-/* 
-        panel.add(new JLabel("Structure:"));
-        panel.add(structureBox);
-
-        panel.add(new JLabel("Dataset:"));
-        panel.add(datasetBox);
-
-        panel.add(loadButton);
- */
-
-
-/*
-        panel.add(structureInfoLabel);
-
-        panel.add(runtimeLabel); 
-*/
-/* 
-        panel.add(new JLabel("Word:"));
-
-        panel.add(wordField);
-
-        panel.add(searchButton);
-
-        panel.add(insertButton);
-
-        panel.add(deleteButton);
- */
-
-        panel.add(statusPanel);
+        // ==========================================
+        // WORD PANEL
+        // ==========================================
 
         JPanel wordPanel = new JPanel();
 
@@ -162,390 +167,310 @@ public class MainUI extends JFrame {
 
         panel.add(wordPanel);
 
-/* 
-        panel.add(new JLabel("Prefix:"));
+        // ==========================================
+        // PREFIX PANEL
+        // ==========================================
 
-        panel.add(prefixField);
+        JPanel autocompletePanel =
+                new JPanel();
 
-        panel.add(suggestionsButton);
- */
-
-        panel.add(wordPanel);
-
-        JPanel autocompletePanel = new JPanel();
-
-        autocompletePanel.add(new JLabel("Prefix:"));
+        autocompletePanel.add(
+                new JLabel("Prefix:"));
 
         autocompletePanel.add(prefixField);
 
-        autocompletePanel.add(suggestionsButton);
+        autocompletePanel.add(
+                suggestionsButton);
 
         panel.add(autocompletePanel);
 
-        panel.add(autocompletePanel);
+        // ==========================================
+        // CLEAR PANEL
+        // ==========================================
 
-        JPanel benchmarkPanel = new JPanel();
-
-        benchmarkPanel.add(benchmarkButton);
-
-        panel.add(benchmarkPanel);
-
-        JPanel resultsControlPanel = new JPanel();
+        JPanel resultsControlPanel =
+                new JPanel();
 
         resultsControlPanel.add(clearButton);
 
         panel.add(resultsControlPanel);
 
-        panel.add(new JScrollPane(resultsArea));
+        panel.add(
+                new JScrollPane(resultsArea));
 
-// Load Button
+        // ==========================================
+        // LOAD BUTTON
+        // ==========================================
+
         loadButton.addActionListener(e -> {
 
-    String selectedStructure =
-            (String) structureBox.getSelectedItem();
+            String selectedStructure =
+                    (String)
+                            structureBox.getSelectedItem();
 
-    switch (selectedStructure) {
+            switch (selectedStructure) {
 
-        case "Sorted Array":
-            currentStructure =
-                    new SortedArray();
-            break;
+                case "Sorted Array":
 
-        case "HashMap":
-            currentStructure =
-                    new HashmapAdapter();
-            break;
+                    currentStructure =
+                            new SortedArray();
 
-        case "Trie":
-            currentStructure =
-                    new Trie();
-            break;
-    }
+                    break;
 
-    String selectedDataset =
-            (String) datasetBox.getSelectedItem();
+                case "HashMap":
 
-    String path =
-        "dataset/" + selectedDataset;
+                    currentStructure =
+                            new HashmapAdapter();
 
-long start = System.nanoTime();
+                    break;
 
-int wordsLoaded =
-        DatasetLoader.loadWords(
-                path,
-                currentStructure);
+                case "Trie":
 
-long end = System.nanoTime();
+                    currentStructure =
+                            new Trie();
 
-double loadTime =
-        (end - start) / 1_000_000.0;
+                    break;
+            }
 
-structureInfoLabel.setText(
-        "Structure: "
-                + selectedStructure
-                + " | Dataset: "
-                + selectedDataset
-                + " | Words Loaded: "
-                + wordsLoaded
-);
+            String selectedDataset =
+                    (String)
+                            datasetBox.getSelectedItem();
 
-runtimeLabel.setText(
-        String.format(
-                "Load Time: %.3f ms",
-                loadTime
-        )
-);
+            String path =
+                    "dataset/" + selectedDataset;
 
-});
-// Search Button
+            long start =
+                    System.nanoTime();
+
+            int wordsLoaded =
+                    DatasetLoader.loadWords(
+                            path,
+                            currentStructure);
+
+            long end =
+                    System.nanoTime();
+
+            double loadTime =
+                    (end - start)
+                            / 1_000_000.0;
+
+            structureInfoLabel.setText(
+                    "Structure: "
+                            + selectedStructure
+                            + " | Dataset: "
+                            + selectedDataset
+                            + " | Words Loaded: "
+                            + wordsLoaded
+            );
+
+            runtimeLabel.setText(
+                    String.format(
+                            "Load Time: %.3f ms",
+                            loadTime
+                    )
+            );
+        });
+
+        // ==========================================
+        // SEARCH BUTTON
+        // ==========================================
 
         searchButton.addActionListener(e -> {
 
-        if (currentStructure == null) {
+            if (currentStructure == null) {
+
+                resultsArea.setText(
+                        "Please load a dataset first."
+                );
+
+                return;
+            }
+
+            String word =
+                    wordField.getText().trim();
+
+            long start =
+                    System.nanoTime();
+
+            boolean found =
+                    currentStructure.search(word);
+
+            long end =
+                    System.nanoTime();
+
+            long runtime =
+                    end - start;
+
+            runtimeLabel.setText(
+                    String.format(
+                            "Search Time: %d ns",
+                            runtime
+                    )
+            );
+
+            if (found) {
+
+                resultsArea.setText(
+                        "\"" + word + "\" found."
+                );
+
+            } else {
+
+                resultsArea.setText(
+                        "\"" + word + "\" not found."
+                );
+            }
+        });
+
+        // ==========================================
+        // INSERT BUTTON
+        // ==========================================
+
+        insertButton.addActionListener(e -> {
+
+            if (currentStructure == null) {
+
+                resultsArea.setText(
+                        "Please load a dataset first."
+                );
+
+                return;
+            }
+
+            String word =
+                    wordField.getText().trim();
+
+            long start =
+                    System.nanoTime();
+
+            currentStructure.insert(word);
+
+            long end =
+                    System.nanoTime();
+
+            long runtime =
+                    end - start;
+
+            runtimeLabel.setText(
+                    String.format(
+                            "Insert Time: %d ns",
+                            runtime
+                    )
+            );
 
             resultsArea.setText(
-                    "Please load a dataset first."
+                    "\"" + word + "\" inserted."
             );
+        });
 
-            return;
-        }
+        // ==========================================
+        // DELETE BUTTON
+        // ==========================================
 
-        String word =
-                wordField.getText().trim();
+        deleteButton.addActionListener(e -> {
 
-        long start = System.nanoTime();
+            if (currentStructure == null) {
 
-        boolean found =
-                currentStructure.search(word);
+                resultsArea.setText(
+                        "Please load a dataset first."
+                );
 
-        long end = System.nanoTime();
+                return;
+            }
 
-        double runtime =
-                (end - start) / 1_000_000.0;
+            String word =
+                    wordField.getText().trim();
 
-        runtimeLabel.setText(
-                String.format(
-                        "Search Time: %.6f ms",
-                        runtime
-                )
-        );
+            long start =
+                    System.nanoTime();
 
-        if (found) {
+            currentStructure.delete(word);
+
+            long end =
+                    System.nanoTime();
+
+            long runtime =
+                    end - start;
+
+            runtimeLabel.setText(
+                    String.format(
+                            "Delete Time: %d ns",
+                            runtime
+                    )
+            );
 
             resultsArea.setText(
-                    "\"" + word + "\" found."
+                    "\"" + word + "\" deleted."
+            );
+        });
+
+        // ==========================================
+        // SUGGESTION BUTTON
+        // ==========================================
+
+        suggestionsButton.addActionListener(e -> {
+
+            if (currentStructure == null) {
+
+                resultsArea.setText(
+                        "Please load a dataset first."
+                );
+
+                return;
+            }
+
+            String prefix =
+                    prefixField.getText().trim();
+
+            long start =
+                    System.nanoTime();
+
+            java.util.List<String> suggestions =
+                    currentStructure.getSuggestions(
+                            prefix
+                    );
+
+            long end =
+                    System.nanoTime();
+
+            long runtime =
+                    end - start;
+
+            runtimeLabel.setText(
+                    String.format(
+                            "Suggestion Time: %d ns",
+                            runtime
+                    )
             );
 
-        } else {
+            resultsArea.setText("");
 
-            resultsArea.setText(
-                    "\"" + word + "\" not found."
-            );
-        }
-    });
+            if (suggestions.isEmpty()) {
 
-// insert button
+                resultsArea.setText(
+                        "No suggestions found."
+                );
 
-insertButton.addActionListener(e -> {
+            } else {
 
-    if (currentStructure == null) {
+                for (String word : suggestions) {
 
-        resultsArea.setText(
-                "Please load a dataset first."
-        );
+                    resultsArea.append(
+                            word + "\n"
+                    );
+                }
 
-        return;
-    }
+                resultsArea.setCaretPosition(0);
+            }
+        });
 
-    String word =
-            wordField.getText().trim();
+        // ==========================================
+        // CLEAR BUTTON
+        // ==========================================
 
-    long start = System.nanoTime();
-
-    currentStructure.insert(word);
-
-    long end = System.nanoTime();
-
-    double runtime =
-            (end - start) / 1_000_000.0;
-
-    runtimeLabel.setText(
-            String.format(
-                    "Insert Time: %.6f ms",
-                    runtime
-            )
-    );
-
-    resultsArea.setText(
-            "\"" + word + "\" inserted."
-    );
-});
-
-// delete button
-
-deleteButton.addActionListener(e -> {
-
-    if (currentStructure == null) {
-
-        resultsArea.setText(
-                "Please load a dataset first."
-        );
-
-        return;
-    }
-
-    String word =
-            wordField.getText().trim();
-
-    long start = System.nanoTime();
-
-    currentStructure.delete(word);
-
-    long end = System.nanoTime();
-
-    double runtime =
-            (end - start) / 1_000_000.0;
-
-    runtimeLabel.setText(
-            String.format(
-                    "Delete Time: %.6f ms",
-                    runtime
-            )
-    );
-
-    resultsArea.setText(
-            "\"" + word + "\" deleted."
-    );
-});
-
-//Suggestion Button
-
-suggestionsButton.addActionListener(e -> {
-
-    if (currentStructure == null) {
-
-        resultsArea.setText(
-                "Please load a dataset first."
-        );
-
-        return;
-    }
-
-    String prefix =
-            prefixField.getText().trim();
-
-    long start = System.nanoTime();
-
-    java.util.List<String> suggestions =
-            currentStructure.getSuggestions(
-                    prefix
-            );
-
-    long end = System.nanoTime();
-
-    double runtime =
-            (end - start) / 1_000_000.0;
-
-    runtimeLabel.setText(
-            String.format(
-                    "Suggestion Time: %.6f ms",
-                    runtime
-            )
-    );
-
-    resultsArea.setText("");
-
-    if (suggestions.isEmpty()) {
-
-        resultsArea.setText(
-                "No suggestions found."
-        );
-
-    } else {
-
-        for (String word : suggestions) {
-
-            resultsArea.append(
-                    word + "\n"
-            );
-        }
-        resultsArea.setCaretPosition(0);
-    }
-});
-
-// Benchmark Button
-
-benchmarkButton.addActionListener(e -> {
-
-    String selectedStructure =
-            (String) structureBox.getSelectedItem();
-
-    String selectedDataset =
-            (String) datasetBox.getSelectedItem();
-
-    String path =
-            "dataset/" + selectedDataset;
-
-    AutocompleteStructure benchmarkStructure =
-            null;
-
-    switch (selectedStructure) {
-
-        case "Sorted Array":
-
-            benchmarkStructure =
-                    new SortedArray();
-
-            break;
-
-        case "HashMap":
-
-            benchmarkStructure =
-                    new HashmapAdapter();
-
-            break;
-
-        case "Trie":
-
-            benchmarkStructure =
-                    new Trie();
-
-            break;
-    }
-
-    BenchmarkResult result =
-            BenchmarkRunner.runBenchmark(
-                    benchmarkStructure,
-                    path,
-                    selectedDataset
-            );
-
-    resultsArea.setText("");
-
-    resultsArea.append(
-            "========== BENCHMARK ==========\n\n"
-    );
-
-    resultsArea.append(
-            "Structure: "
-                    + selectedStructure
-                    + "\n"
-    );
-
-    resultsArea.append(
-            "Dataset: "
-                    + result.datasetName
-                    + "\n\n"
-    );
-
-    resultsArea.append(
-            String.format(
-                    "Load Time: %.3f ms\n",
-                    result.loadTime
-            )
-    );
-
-    resultsArea.append(
-            String.format(
-                    "Average Search: %.2f ns\n",
-                    result.avgSearch
-            )
-    );
-
-    resultsArea.append(
-            String.format(
-                    "Average Prefix: %.2f ns\n",
-                    result.avgPrefix
-            )
-    );
-
-    resultsArea.append(
-            String.format(
-                    "Average Insert: %.2f ns\n",
-                    result.avgInsert
-            )
-    );
-
-    resultsArea.append(
-            String.format(
-                    "Average Delete: %.2f ns\n",
-                    result.avgDelete
-            )
-    );
-
-    resultsArea.append(
-            String.format(
-                    "Memory Usage: %.2f MB\n",
-                    result.memoryMB
-            )
-    );
-
-    resultsArea.setCaretPosition(0);
-});
-
-    clearButton.addActionListener(e -> {
-        resultsArea.setText("");
-    });
+        clearButton.addActionListener(e -> {
+            resultsArea.setText("");
+        });
 
         add(panel);
 
