@@ -1,6 +1,8 @@
 package sortedarray;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class testingrenji {
@@ -63,14 +65,21 @@ public class testingrenji {
 
                 long startLoad = System.nanoTime();
 
+                List<String> datasetWords =
+                        new ArrayList<>();
+
                 Scanner sc = new Scanner(
                         new File("dataset\\" + dataset));
 
                 while (sc.hasNextLine()) {
-                    sa.insert(sc.nextLine());
+
+                datasetWords.add(
+                        sc.nextLine());
                 }
 
                 sc.close();
+
+                sa.loadDataset(datasetWords);
 
                 long endLoad = System.nanoTime();
 
