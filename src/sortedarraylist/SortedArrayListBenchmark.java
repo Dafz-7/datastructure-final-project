@@ -1,11 +1,11 @@
-package sortedarray;
+package sortedarraylist;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class testingrenji {
+public class SortedArrayListBenchmark {
 
     private static final int ITERATIONS = 10000;
 
@@ -57,7 +57,7 @@ public class testingrenji {
 
             for (String dataset : datasets) {
 
-                SortedArray sa = new SortedArray();
+                SortedArrayList sa = new SortedArrayList();
 
                 // ==========================
                 // LOAD DATASET

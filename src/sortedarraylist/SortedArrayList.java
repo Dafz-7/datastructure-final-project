@@ -1,14 +1,14 @@
-package sortedarray;
+package sortedarraylist;
 
 import java.util.*;
 
 import interfaces.*;
 
-public class SortedArray implements AutocompleteStructure {
+public class SortedArrayList implements AutocompleteStructure {
 
     private ArrayList<String> words;
 
-    public SortedArray() {
+    public SortedArrayList() {
         words = new ArrayList<>();
     }
 

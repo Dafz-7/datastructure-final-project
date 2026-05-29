@@ -2,7 +2,7 @@ package trie;
 
 import datasetutils.DatasetLoader;
 
-public class testingrofi {
+public class TrieBenchmark {
 
     private static final int ITERATIONS = 10000;
 

@@ -2,7 +2,7 @@ package hashmap;
 
 import datasetutils.DatasetLoader;
 
-public class testingfebri {
+public class HashMapBenchmark {
 
     private static final int ITERATIONS = 10000;
 

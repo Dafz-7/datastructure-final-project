@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import interfaces.AutocompleteStructure;
-import sortedarray.SortedArray;
+import sortedarraylist.SortedArrayList;
 import trie.Trie;
 import hashmap.HashmapAdapter;
 import datasetutils.DatasetLoader;
@@ -213,7 +213,7 @@ public class MainUI extends JFrame {
                 case "Sorted Array":
 
                     currentStructure =
-                            new SortedArray();
+                            new SortedArrayList();
 
                     break;
 
