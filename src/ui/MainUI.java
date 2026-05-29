@@ -6,7 +6,7 @@ import java.awt.*;
 import interfaces.AutocompleteStructure;
 import sortedarraylist.SortedArrayList;
 import trie.Trie;
-import hashmap.HashmapAdapter;
+import hashmap.HashmapSystem;
 import datasetutils.DatasetLoader;
 
 public class MainUI extends JFrame {
@@ -220,7 +220,7 @@ public class MainUI extends JFrame {
                 case "HashMap":
 
                     currentStructure =
-                            new HashmapAdapter();
+                            new HashmapSystem();
 
                     break;
 

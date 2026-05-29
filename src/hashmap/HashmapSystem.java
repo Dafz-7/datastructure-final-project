@@ -1,283 +1,208 @@
 package hashmap;
 
+import interfaces.AutocompleteStructure;
+
 import java.util.*;
 
 /*
  * AUTOCOMPLETE SYSTEM
  *
- * This program stores words and suggests matching words
- * based on prefixes typed by the user.
+ * Uses:
+ * prefix -> (word -> frequency)
  *
  * Example:
- * Typing "ap" may suggest:
- * apple
- * app
- * application
+ *
+ * "ap" ->
+ * {
+ *   apple : 5,
+ *   app : 3,
+ *   application : 2
+ * }
  */
 
-public class HashmapSystem {
+public class HashmapSystem
+        implements AutocompleteStructure {
+
+    // =========================
+    // Main Data Structure
+    // =========================
+    private HashMap<String,
+            HashMap<String, Integer>> prefixHashMap;
+
+    // =========================
+    // Constructor
+    // =========================
+    public HashmapSystem() {
+
+        prefixHashMap = new HashMap<>();
+    }
+
+    // =========================
+    // Insert Word
+    // =========================
+    @Override
+    public void insert(String word) {
+
+        insert(word, 1);
+    }
 
     /*
-     * MAIN DATA STRUCTURE
-     *
-     * Stores:
-     * prefix -> (word -> frequency)
-     *
-     * Example:
-     *
-     * "ap" ->
-     * {
-     * "apple" : 5,
-     * "app" : 3,
-     * "application" : 2
-     * }
+     * Insert with frequency
      */
-    private HashMap<String, HashMap<String, Integer>> prefixHashMap;
+    public void insert(
+            String word,
+            int times) {
 
-    /*
-     * INSERT METHOD
-     *
-     * Adds a word into the autocomplete system.
-     *
-     * Parameters:
-     * s -> the word
-     * times -> how many times the word appears
-     *
-     * Example:
-     * insert("apple", 5)
-     *
-     * This creates prefixes:
-     * a
-     * ap
-     * app
-     * appl
-     * apple
-     */
-    public void insert(String s, int times) {
+        StringBuilder sb =
+                new StringBuilder();
 
-        // Used to build prefixes character by character
-        StringBuilder sb = new StringBuilder();
+        // Build prefixes
+        for (int i = 0;
+             i < word.length();
+             i++) {
 
-        // Loop through every character in the word
-        for (int i = 0; i < s.length(); i++) {
+            sb.append(word.charAt(i));
 
-            // Add character to current prefix
-            sb.append(s.charAt(i));
+            String prefix =
+                    sb.toString();
 
-            // StringBuilder to String
-            String str = sb.toString();
+            // Create prefix map if missing
+            prefixHashMap.putIfAbsent(
+                    prefix,
+                    new HashMap<>());
 
-            /*
-             * If prefix does not exist yet,
-             * create a new hashmap for it.
-             */
-            if (!prefixHashMap.containsKey(str)) {
+            HashMap<String, Integer> map =
+                    prefixHashMap.get(prefix);
 
-                prefixHashMap.put(
-                        str,
-                        new HashMap<String, Integer>());
-            }
-
-            /*
-             * If word does not exist under this prefix,
-             * add it with its frequency.
-             */
-            if (!prefixHashMap.get(str).containsKey(s)) {
-
-                prefixHashMap.get(str).put(s, times);
-
-            } else {
-
-                /*
-                 * If word already exists,
-                 * increase frequency.
-                 *
-                 * Example:
-                 * apple : 5 -> 6
-                 */
-                prefixHashMap.get(str).put(
-                        s,
-                        prefixHashMap.get(str).get(s) + times);
-            }
+            // Add or update frequency
+            map.put(
+                    word,
+                    map.getOrDefault(word, 0)
+                            + times);
         }
     }
 
-    public void remove(String s) {
+    // =========================
+    // Search Exact Word
+    // =========================
+    @Override
+    public boolean search(String word) {
 
-        // Used to build prefixes character by character
-        StringBuilder sb = new StringBuilder();
+        Map<String, Integer> result =
+                lookup(word);
 
-        // Loop through every character in the word
-        for (int i = 0; i < s.length(); i++) {
+        return result.containsKey(word);
+    }
 
-            // Add character to current prefix
-            sb.append(s.charAt(i));
+    // =========================
+    // Delete Word
+    // =========================
+    @Override
+    public void delete(String word) {
 
-            // StringBuilder to String
-            String str = sb.toString();
+        StringBuilder sb =
+                new StringBuilder();
 
-            /*
-             * If prefix exists
-             */
-            if (prefixHashMap.containsKey(str)) {
+        // Remove word from all prefixes
+        for (int i = 0;
+             i < word.length();
+             i++) {
 
-                /*
-                 * Remove word
-                 */
+            sb.append(word.charAt(i));
+
+            String prefix =
+                    sb.toString();
+
+            if (prefixHashMap
+                    .containsKey(prefix)) {
+
                 prefixHashMap
-                        .get(str)
-                        .remove(s);
+                        .get(prefix)
+                        .remove(word);
 
-                /*
-                 * Remove empty prefix maps
-                 */
+                // Remove empty prefix maps
                 if (prefixHashMap
-                        .get(str)
+                        .get(prefix)
                         .isEmpty()) {
 
-                    prefixHashMap.remove(str);
+                    prefixHashMap
+                            .remove(prefix);
                 }
             }
         }
     }
 
-    /*
-     * LOOKUP METHOD
-     *
-     * Finds all words matching a prefix.
-     *
-     * Example:
-     * lookup("ap")
-     *
-     * Returns:
-     * {
-     * apple : 5,
-     * app : 3,
-     * application : 2
-     * }
-     */
-    public Map<String, Integer> lookup(String s) {
+    // =========================
+    // Lookup Prefix
+    // =========================
+    public Map<String, Integer>
+    lookup(String prefix) {
 
-        // If prefix exists, return matching words
-        if (prefixHashMap.containsKey(s)) {
-            return prefixHashMap.get(s);
+        if (prefixHashMap
+                .containsKey(prefix)) {
+
+            return prefixHashMap
+                    .get(prefix);
         }
 
-        // Otherwise return empty hashmap
-        return new HashMap<String, Integer>();
+        return new HashMap<>();
     }
 
-    /*
-     * SEARCH METHOD
-     *
-     * Finds autocomplete suggestions
-     * based on a typed prefix.
-     *
-     * Example:
-     *
-     * search("ap")
-     *
-     * Possible matching words:
-     * apple
-     * app
-     * application
-     *
-     * The method:
-     *
-     * 1. Gets all matching words
-     * from the hashmap
-     *
-     * 2. Sorts them using:
-     * - highest frequency first
-     * - alphabetical order if tied
-     *
-     * 3. Returns only the top 3 results
-     */
-    public java.util.List<String> search(String prefix) {
+    // =========================
+    // Get Suggestions
+    // =========================
+    @Override
+    public List<String>
+    getSuggestions(String prefix) {
 
-        java.util.List<String> res = new ArrayList<>();
-
-        java.util.List<Map.Entry<String, Integer>> list =
-
-                new ArrayList<>(
-                        lookup(prefix).entrySet());
+        List<Map.Entry<String, Integer>>
+                list = new ArrayList<>(
+                lookup(prefix).entrySet());
 
         Collections.sort(
                 list,
-                new ValueThenKeyComparator<String, Integer>());
+                new ValueThenKeyComparator<>());
 
-        for (int i = 0; i < list.size(); i++) {
+        List<String> suggestions =
+                new ArrayList<>();
 
-            res.add(
-                    list.get(i).getKey());
+        for (Map.Entry<String, Integer>
+                entry : list) {
+
+            suggestions.add(
+                    entry.getKey());
         }
 
-        return res;
+        return suggestions;
     }
 
-    /*
-     * CUSTOM COMPARATOR
-     *
-     * Used for sorting autocomplete suggestions.
-     *
-     * Sorting Rules:
-     *
-     * 1. Higher frequency first
-     * 2. Alphabetical order if frequencies tie
-     *
-     * Example:
-     *
-     * apple : 5
-     * app : 3
-     * application : 2
-     */
-    public class ValueThenKeyComparator<K extends Comparable<? super K>, V extends Comparable<? super V>>
+    // =========================
+    // Custom Comparator
+    // =========================
+    public class ValueThenKeyComparator
+            <K extends Comparable<? super K>,
+             V extends Comparable<? super V>>
             implements Comparator<Map.Entry<K, V>> {
 
+        @Override
         public int compare(
                 Map.Entry<K, V> a,
                 Map.Entry<K, V> b) {
 
-            /*
-             * Compare frequencies first.
-             *
-             * Higher frequency comes first.
-             */
-            int cmp1 = b.getValue().compareTo(a.getValue());
+            // Higher frequency first
+            int cmp =
+                    b.getValue()
+                            .compareTo(
+                                    a.getValue());
 
-            // If frequencies are different
-            if (cmp1 != 0) {
-                return cmp1;
+            if (cmp != 0) {
+                return cmp;
             }
 
-            /*
-             * If frequencies are equal,
-             * sort alphabetically.
-             */
-            return a.getKey().compareTo(b.getKey());
-        }
-    }
-
-    /*
-     * CONSTRUCTOR
-     *
-     * Initializes the autocomplete system.
-     *
-     * Parameters:
-     * words -> array of words
-     * times -> array of frequencies
-     */
-    public HashmapSystem(
-            String[] words,
-            int[] times) {
-
-        // Create the main hashmap
-        prefixHashMap = new HashMap<>();
-
-        // Insert all words into system
-        for (int i = 0; i < words.length; i++) {
-
-            insert(words[i], times[i]);
+            // Alphabetical if tied
+            return a.getKey()
+                    .compareTo(
+                            b.getKey());
         }
     }
 }

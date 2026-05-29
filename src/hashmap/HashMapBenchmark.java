@@ -54,8 +54,8 @@ public class HashMapBenchmark {
 
             for (String dataset : datasets) {
 
-                HashmapAdapter hashmap =
-                        new HashmapAdapter();
+                HashmapSystem hashmap =
+                        new HashmapSystem();
 
                 // ==========================
                 // LOAD DATASET
