@@ -8,6 +8,8 @@ import sortedarraylist.SortedArrayList;
 import trie.Trie;
 import hashmap.HashmapSystem;
 import datasetutils.DatasetLoader;
+import benchmark.BenchmarkResult;
+import benchmark.BenchmarkRunner;
 
 public class MainUI extends JFrame {
 
@@ -25,6 +27,7 @@ public class MainUI extends JFrame {
     private JButton insertButton;
     private JButton deleteButton;
     private JButton clearButton;
+    private JButton benchmarkButton;
 
     public MainUI() {
 
@@ -91,6 +94,8 @@ public class MainUI extends JFrame {
 
         deleteButton =
                 new JButton("Delete");
+
+        benchmarkButton = new JButton("Run Benchmark");
 
         resultsArea.setEditable(false);
 
@@ -183,6 +188,16 @@ public class MainUI extends JFrame {
                 suggestionsButton);
 
         panel.add(autocompletePanel);
+
+        // ==========================================
+        // BENCHMARK PANEL
+        // ==========================================
+
+        JPanel benchmarkPanel = new JPanel();
+
+        benchmarkPanel.add(benchmarkButton);
+
+        panel.add(benchmarkPanel);
 
         // ==========================================
         // CLEAR PANEL
@@ -462,6 +477,117 @@ public class MainUI extends JFrame {
 
                 resultsArea.setCaretPosition(0);
             }
+        });
+
+        // ==========================================
+        // BENCHMARK BUTTON
+        // ==========================================
+
+        benchmarkButton.addActionListener(e -> {
+
+        String selectedStructure =
+                (String) structureBox.getSelectedItem();
+
+        String selectedDataset =
+                (String) datasetBox.getSelectedItem();
+
+        String path =
+                "dataset/" + selectedDataset;
+
+        AutocompleteStructure benchmarkStructure = null;
+
+        switch (selectedStructure) {
+
+                case "Sorted Array":
+
+                benchmarkStructure =
+                        new SortedArrayList();
+
+                break;
+
+                case "HashMap":
+
+                benchmarkStructure =
+                        new HashmapSystem();
+
+                break;
+
+                case "Trie":
+
+                benchmarkStructure =
+                        new Trie();
+
+                break;
+        }
+
+        BenchmarkResult result =
+                BenchmarkRunner.runBenchmark(
+                        benchmarkStructure,
+                        path,
+                        selectedDataset
+                );
+
+        resultsArea.setText("");
+
+        resultsArea.append(
+                "========== BENCHMARK ==========\n\n"
+        );
+
+        resultsArea.append(
+                "Structure: "
+                        + selectedStructure
+                        + "\n"
+        );
+
+        resultsArea.append(
+                "Dataset: "
+                        + result.datasetName
+                        + "\n\n"
+        );
+
+        resultsArea.append(
+                String.format(
+                        "Load Time: %.3f ms\n",
+                        result.loadTime
+                )
+        );
+
+        resultsArea.append(
+                String.format(
+                        "Average Search: %.2f ns\n",
+                        result.avgSearch
+                )
+        );
+
+        resultsArea.append(
+                String.format(
+                        "Average Prefix: %.2f ns\n",
+                        result.avgPrefix
+                )
+        );
+
+        resultsArea.append(
+                String.format(
+                        "Average Insert: %.2f ns\n",
+                        result.avgInsert
+                )
+        );
+
+        resultsArea.append(
+                String.format(
+                        "Average Delete: %.2f ns\n",
+                        result.avgDelete
+                )
+        );
+
+        resultsArea.append(
+                String.format(
+                        "Memory Usage: %.2f MB\n",
+                        result.memoryMB
+                )
+        );
+
+        resultsArea.setCaretPosition(0);
         });
 
         // ==========================================
