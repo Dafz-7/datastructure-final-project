@@ -31,7 +31,7 @@ public class MainUI extends JFrame {
 
     public MainUI() {
 
-        setTitle("Autocomplete Data Structure Comparison");
+        setTitle("Autocomplete Program - Trie, HashMap, and Sorted ArrayList");
 
         setSize(600, 300);
 
