@@ -1,7 +1,11 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.List;
 
 import interfaces.AutocompleteStructure;
 import sortedarraylist.SortedArrayList;
@@ -219,55 +223,61 @@ public class MainUI extends JFrame {
 
         loadButton.addActionListener(e -> {
 
-            String selectedStructure =
-                    (String)
-                            structureBox.getSelectedItem();
+        String selectedStructure = (String)structureBox.getSelectedItem();
 
-            switch (selectedStructure) {
+                switch (selectedStructure) {
 
-                case "Sorted Array":
+                        case "Sorted Array":
 
-                    currentStructure =
-                            new SortedArrayList();
+                        currentStructure = new SortedArrayList();
+                break;
 
-                    break;
+                case "HashMap": currentStructure = new HashmapSystem();
 
-                case "HashMap":
+                break;
 
-                    currentStructure =
-                            new HashmapSystem();
+                case "Trie": currentStructure = new Trie();
 
-                    break;
+                break;
+                }
 
-                case "Trie":
+        String selectedDataset = (String)datasetBox.getSelectedItem();
 
-                    currentStructure =
-                            new Trie();
+        String path = "dataset/" + selectedDataset;
 
-                    break;
-            }
+        long start = System.nanoTime(); 
+        int wordsLoaded = 0;
+        if (currentStructure instanceof SortedArrayList) {
 
-            String selectedDataset =
-                    (String)
-                            datasetBox.getSelectedItem();
+                SortedArrayList sa = (SortedArrayList) currentStructure;
 
-            String path =
-                    "dataset/" + selectedDataset;
+                List<String> datasetWords =new ArrayList<>();
 
-            long start =
-                    System.nanoTime();
+                try {
 
-            int wordsLoaded =
-                    DatasetLoader.loadWords(
-                            path,
-                            currentStructure);
+                        Scanner sc = new Scanner(new File(path));
+                        while (sc.hasNextLine()) {
+                        datasetWords.add(sc.nextLine());
+                }
 
-            long end =
-                    System.nanoTime();
+                        sc.close();
 
-            double loadTime =
-                    (end - start)
-                            / 1_000_000.0;
+                } catch (Exception ex) {
+
+                        ex.printStackTrace();
+                }
+
+                sa.loadDataset(datasetWords);
+                wordsLoaded = datasetWords.size();
+
+                } 
+        
+        else {
+                wordsLoaded = DatasetLoader.loadWords(path,currentStructure);
+        }
+        long end = System.nanoTime();
+
+        double loadTime = (end - start)/ 1_000_000.0;
 
             structureInfoLabel.setText(
                     "Structure: "
