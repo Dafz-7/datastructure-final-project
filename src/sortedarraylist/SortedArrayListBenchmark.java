@@ -23,58 +23,45 @@ public class SortedArrayListBenchmark {
                 "words_300000.txt"
         };
 
-        // ==========================================
-        // REPEAT WHOLE BENCHMARK 3 TIMES
-        // ==========================================
 
+        // loop to run benchmark 3 times
         for (int run = 1; run <= 3; run++) {
 
-            System.out.println(
-                    "\n========================================================");
+                System.out.println("");
 
-            System.out.println(
-                    "BENCHMARK RUN #" + run);
+                System.out.println("Benchmark #" + run);
 
-            System.out.println(
-                    "========================================================");
+                System.out.println("");
 
-            System.out.printf(
-                    "%-15s %-12s %-12s %-12s %-12s %-12s %-12s%n",
-                    "Dataset",
-                    "Load(ms)",
-                    "Search(ns)",
-                    "Prefix(ns)",
-                    "Insert(ns)",
-                    "Delete(ns)",
-                    "Memory(MB)");
+                System.out.printf(
+                        "%-15s %-12s %-12s %-12s %-12s %-12s %-12s%n",
+                        "Dataset",
+                        "Load(ms)",
+                        "Search(ns)",
+                        "Prefix(ns)",
+                        "Insert(ns)",
+                        "Delete(ns)",
+                        "Memory(MB)");
 
-            System.out.println(
-                    "---------------------------------------------------------------------------------------------");
+                System.out.println("---------------------------------------------------------------------------------------------");
 
-            // ==========================================
-            // LOOP THROUGH DATASETS
-            // ==========================================
-
-            for (String dataset : datasets) {
+        // Loop through all mentioned dataset
+        for (String dataset : datasets) {
 
                 SortedArrayList sa = new SortedArrayList();
 
-                // ==========================
-                // LOAD DATASET
-                // ==========================
+                // Load dataset and timer
 
                 long startLoad = System.nanoTime();
 
-                List<String> datasetWords =
-                        new ArrayList<>();
+                List<String> datasetWords = new ArrayList<>();
 
-                Scanner sc = new Scanner(
-                        new File("dataset\\" + dataset));
+                Scanner sc = new Scanner(new File("dataset\\" + dataset));
 
                 while (sc.hasNextLine()) {
 
-                datasetWords.add(
-                        sc.nextLine());
+                        datasetWords.add(sc.nextLine());
+
                 }
 
                 sc.close();
@@ -83,114 +70,71 @@ public class SortedArrayListBenchmark {
 
                 long endLoad = System.nanoTime();
 
-                double loadTime =
-                        (endLoad - startLoad)
-                                / 1_000_000.0;
+                double loadTime = (endLoad - startLoad)/ 1_000_000.0;
 
-                // ==========================
-                // MEMORY
-                // ==========================
-
-                Runtime runtime =
-                        Runtime.getRuntime();
+                // Memory load
+                Runtime runtime = Runtime.getRuntime();
 
                 runtime.gc();
 
-                long usedMemory =
-                        runtime.totalMemory()
-                                - runtime.freeMemory();
+                long usedMemory = runtime.totalMemory() - runtime.freeMemory();
 
-                double memoryMB =
-                        usedMemory
-                                / (1024.0 * 1024.0);
+                double memoryMB = usedMemory/ (1024.0 * 1024.0);
 
-                // ==========================
-                // SEARCH
-                // ==========================
+                // Search function
 
-                long startSearch =
-                        System.nanoTime();
+                long startSearch = System.nanoTime();
 
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
 
-                    sa.search("antineutrino");
+                        sa.search("antineutrino");
+
                 }
 
-                long endSearch =
-                        System.nanoTime();
+                long endSearch = System.nanoTime();
 
-                double avgSearch =
-                        (endSearch - startSearch)
-                                / (double) ITERATIONS;
+                double avgSearch = (endSearch - startSearch) / (double) ITERATIONS;
 
-                // ==========================
-                // PREFIX SEARCH
-                // ==========================
+                // Prefix searching
 
-                long startPrefix =
-                        System.nanoTime();
+                long startPrefix = System.nanoTime();
 
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
 
-                    sa.getSuggestions("sh");
+                        sa.getSuggestions("sh");
                 }
 
-                long endPrefix =
-                        System.nanoTime();
+                long endPrefix = System.nanoTime();
 
-                double avgPrefix =
-                        (endPrefix - startPrefix)
-                                / (double) ITERATIONS;
+                double avgPrefix = (endPrefix - startPrefix) / (double) ITERATIONS;
 
-                // ==========================
-                // INSERT
-                // ==========================
+                // insert 
 
-                long startInsert =
-                        System.nanoTime();
+                long startInsert = System.nanoTime();
 
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
 
-                    sa.insert(
-                            "benchmarkInsert"
-                                    + i);
+                        sa.insert("benchmarkInsert" + i);
                 }
 
-                long endInsert =
-                        System.nanoTime();
+                long endInsert = System.nanoTime();
 
-                double avgInsert =
-                        (endInsert - startInsert)
-                                / (double) ITERATIONS;
+                double avgInsert = (endInsert - startInsert) / (double) ITERATIONS;
 
-                // ==========================
-                // DELETE
-                // ==========================
+                
+                // Delete
 
-                long startDelete =
-                        System.nanoTime();
+                long startDelete = System.nanoTime();
 
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
 
-                    sa.delete(
-                            "benchmarkInsert"
-                                    + i);
+                        sa.delete("benchmarkInsert" + i);
+
                 }
 
-                long endDelete =
-                        System.nanoTime();
+                long endDelete = System.nanoTime();
 
-                double avgDelete =
-                        (endDelete - startDelete)
-                                / (double) ITERATIONS;
+                double avgDelete = (endDelete - startDelete) / (double) ITERATIONS;
 
                 // ==========================
                 // PRINT RESULT ROW
@@ -205,7 +149,7 @@ public class SortedArrayListBenchmark {
                         avgInsert,
                         avgDelete,
                         memoryMB);
-            }
+                        }
+                }
         }
-    }
 }

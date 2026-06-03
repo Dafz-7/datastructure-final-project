@@ -12,9 +12,7 @@ public class SortedArrayList implements AutocompleteStructure {
         words = new ArrayList<>();
     }
 
-    // =========================
-    // BULK LOAD METHOD
-    // =========================
+    // Load method
     public void loadDataset(List<String> dataset) {
 
         // Add all words unsorted
@@ -25,14 +23,13 @@ public class SortedArrayList implements AutocompleteStructure {
             }
         }
 
-        // Sort entire dataset once
+        // Sort dataset with timsort
         Collections.sort(words);
 
     }
 
-    // =========================
-    // NORMAL INSERT
-    // =========================
+
+    // Insert
     @Override
     public void insert(String word) {
 
@@ -49,9 +46,8 @@ public class SortedArrayList implements AutocompleteStructure {
         words.add(-(index + 1), word);
     }
 
-    // =========================
-    // DELETE
-    // =========================
+    // Delete
+
     @Override
     public void delete(String word) {
 
@@ -62,18 +58,15 @@ public class SortedArrayList implements AutocompleteStructure {
         }
     }
 
-    // =========================
-    // SEARCH
-    // =========================
+    // Search
     @Override
     public boolean search(String word) {
 
         return Collections.binarySearch(words, word) >= 0;
     }
 
-    // =========================
-    // GET SUGGESTIONS
-    // =========================
+    // Prefix search
+
     @Override
     public List<String> getSuggestions(String prefix) {
 
@@ -99,9 +92,9 @@ public class SortedArrayList implements AutocompleteStructure {
         return results;
     }
 
-    // =========================
-    // FIND FIRST PREFIX
-    // =========================
+
+    // Find initial prefix
+
     private int findInitialPrefix(String prefix) {
 
         int low = 0;
