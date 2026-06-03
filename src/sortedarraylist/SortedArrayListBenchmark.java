@@ -7,21 +7,21 @@ import java.util.Scanner;
 
 public class SortedArrayListBenchmark {
 
-    private static final int ITERATIONS = 10000;
+        private static final int ITERATIONS = 10000;
 
-    public static void main(String[] args) throws Exception {
+        public static void main(String[] args) throws Exception {
 
-        String[] datasets = {
-                "words_100.txt",
-                "words_1000.txt",
-                "words_10000.txt",
-                "words_20000.txt",
-                "words_50000.txt",
-                "words_75000.txt",
-                "words_100000.txt",
-                "words_200000.txt",
-                "words_300000.txt"
-        };
+                String[] datasets = {
+                        "words_100.txt",
+                        "words_1000.txt",
+                        "words_10000.txt",
+                        "words_20000.txt",
+                        "words_50000.txt",
+                        "words_75000.txt",
+                        "words_100000.txt",
+                        "words_200000.txt",
+                        "words_300000.txt"
+                };
 
 
         // loop to run benchmark 3 times
