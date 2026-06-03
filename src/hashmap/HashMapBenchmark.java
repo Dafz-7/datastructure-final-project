@@ -1,3 +1,5 @@
+// this class is for hashmap structure benchmark (febri).
+
 package hashmap;
 
 import datasetutils.DatasetLoader;

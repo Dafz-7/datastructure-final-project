@@ -1,3 +1,5 @@
+// this class is for hashmap structure (febri).
+
 package hashmap;
 
 import interfaces.AutocompleteStructure;

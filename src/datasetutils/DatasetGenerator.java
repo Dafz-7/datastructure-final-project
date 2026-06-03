@@ -1,3 +1,5 @@
+// this class is to generate multiple benchmark datasets from one large master dataset (words_full.txt) found online from a github website (read the report we made for full explanation).
+
 package datasetutils;
 
 import java.io.*;
@@ -9,7 +11,8 @@ public class DatasetGenerator {
 
         try {
 
-            // Read all words from master dataset
+            // master dataset is words_full.txt .
+            // read all words from master dataset.
             List<String> words = new ArrayList<>();
 
             Scanner sc = new Scanner(new File("dataset/words_full.txt"));
@@ -20,10 +23,12 @@ public class DatasetGenerator {
 
             sc.close();
 
-            // Shuffle words randomly
+            // pick words randomly from the master dataset when splitting
+            // Exception for the word "antineutrino", since it is for testing purposes that
+            // is available on all datasets.
             Collections.shuffle(words, new Random(42));
 
-            // Dataset sizes
+            // dataset sizes
             int[] sizes = {
                     100,
                     1000,
@@ -36,7 +41,7 @@ public class DatasetGenerator {
                     300000
             };
 
-            // Generate subset files
+            // generate splitting files
             for (int size : sizes) {
 
                 PrintWriter writer = new PrintWriter("dataset/words_" + size + ".txt");
@@ -53,7 +58,12 @@ public class DatasetGenerator {
             System.out.println("All datasets generated successfully.");
 
         } catch (Exception e) {
+
+            // java method that will print exception name, error message, a line-by-line
+            // breakdown of the active methods, class names, file sources, and exact line
+            // numbers where the problem is located.
             e.printStackTrace();
+
         }
     }
 }

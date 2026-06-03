@@ -1,3 +1,5 @@
+// this class is for sortedarraylist structure benchmark (renji).
+
 package sortedarraylist;
 
 import java.io.File;
