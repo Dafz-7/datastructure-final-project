@@ -1,5 +1,8 @@
 package benchmark;
 
+import sortedarraylist.SortedArrayList;
+import java.io.File;
+import java.util.*;
 import datasetutils.DatasetLoader;
 import interfaces.AutocompleteStructure;
 
@@ -23,12 +26,46 @@ public class BenchmarkRunner {
         // ==========================
 
         long startLoad = System.nanoTime();
+/* 
+        DatasetLoader.loadWords(
+                datasetPath,
+                structure
+        );
+ */
+
+        if (structure instanceof SortedArrayList) {
+
+        SortedArrayList sa =
+                (SortedArrayList) structure;
+
+        List<String> datasetWords =
+                new ArrayList<>();
+
+        try {
+
+        Scanner sc = new Scanner(new File(datasetPath));
+
+        while (sc.hasNextLine()) {
+
+                datasetWords.add(
+                        sc.nextLine());
+        }
+
+        sc.close();
+
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+        
+        sa.loadDataset(datasetWords);
+
+        } else {
 
         DatasetLoader.loadWords(
                 datasetPath,
                 structure
         );
-
+        }
         long endLoad = System.nanoTime();
 
         result.loadTime =
