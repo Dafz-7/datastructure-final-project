@@ -20,24 +20,24 @@ import benchmark.BenchmarkRunner;
 
 public class MainUI extends JFrame {
 
-    // ui components
-    private JComboBox<String> structureBox;
-    private JComboBox<String> datasetBox;
-    private JButton loadButton;
-    private AutocompleteStructure currentStructure;
-    private JLabel structureInfoLabel;
-    private JLabel runtimeLabel;
-    private JTextField wordField;
-    private JButton searchButton;
-    private JTextArea resultsArea;
-    private JTextField prefixField;
-    private JButton suggestionsButton;
-    private JButton insertButton;
-    private JButton deleteButton;
-    private JButton clearButton;
-    private JButton benchmarkButton;
+        // ui components
+        private JComboBox<String> structureBox;
+        private JComboBox<String> datasetBox;
+        private JButton loadButton;
+        private AutocompleteStructure currentStructure;
+        private JLabel structureInfoLabel;
+        private JLabel runtimeLabel;
+        private JTextField wordField;
+        private JButton searchButton;
+        private JTextArea resultsArea;
+        private JTextField prefixField;
+        private JButton suggestionsButton;
+        private JButton insertButton;
+        private JButton deleteButton;
+        private JButton clearButton;
+        private JButton benchmarkButton;
 
-    public MainUI() {
+   public MainUI() {
 
         // window setup
         setTitle("Autocomplete Program - Trie, HashMap, and Sorted ArrayList");
@@ -99,20 +99,16 @@ public class MainUI extends JFrame {
         JPanel panel = new JPanel();
 
         panel.setLayout(
-                new BoxLayout(
-                        panel,
-                        BoxLayout.Y_AXIS));
+                new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // dataset panel
         JPanel datasetPanel = new JPanel();
 
-        datasetPanel.add(
-                new JLabel("Structure:"));
+        datasetPanel.add(new JLabel("Structure:"));
 
         datasetPanel.add(structureBox);
 
-        datasetPanel.add(
-                new JLabel("Dataset:"));
+        datasetPanel.add(new JLabel("Dataset:"));
 
         datasetPanel.add(datasetBox);
 
@@ -124,18 +120,13 @@ public class MainUI extends JFrame {
         JPanel statusPanel = new JPanel();
 
         statusPanel.setLayout(
-                new BoxLayout(
-                        statusPanel,
-                        BoxLayout.Y_AXIS));
+                new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
 
-        structureInfoLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT);
+        structureInfoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        runtimeLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT);
+        runtimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        statusPanel.add(
-                structureInfoLabel);
+        statusPanel.add(structureInfoLabel);
 
         statusPanel.add(runtimeLabel);
 
@@ -159,13 +150,11 @@ public class MainUI extends JFrame {
         // autocomplete panel
         JPanel autocompletePanel = new JPanel();
 
-        autocompletePanel.add(
-                new JLabel("Prefix:"));
+        autocompletePanel.add(new JLabel("Prefix:"));
 
         autocompletePanel.add(prefixField);
 
-        autocompletePanel.add(
-                suggestionsButton);
+        autocompletePanel.add(suggestionsButton);
 
         panel.add(autocompletePanel);
 
@@ -183,44 +172,43 @@ public class MainUI extends JFrame {
 
         panel.add(resultsControlPanel);
 
-        panel.add(
-                new JScrollPane(resultsArea));
+        panel.add(new JScrollPane(resultsArea));
 
         // load dataset
         loadButton.addActionListener(e -> {
 
-            String selectedStructure = (String) structureBox.getSelectedItem();
+        String selectedStructure = (String) structureBox.getSelectedItem();
 
             // create selected data structure
-            switch (selectedStructure) {
+        switch (selectedStructure) {
 
                 case "Sorted Array":
 
-                    currentStructure = new SortedArrayList();
-                    break;
+                        currentStructure = new SortedArrayList();
+                        break;
 
                 case "HashMap":
-                    currentStructure = new HashmapSystem();
+                        currentStructure = new HashmapSystem();
 
-                    break;
+                        break;
 
                 case "Trie":
-                    currentStructure = new Trie();
+                        currentStructure = new Trie();
 
-                    break;
-            }
+                        break;
+                }
 
-            String selectedDataset = (String) datasetBox.getSelectedItem();
+                String selectedDataset = (String) datasetBox.getSelectedItem();
 
             // selected dataset path
-            String path = "dataset/" + selectedDataset;
+                String path = "dataset/" + selectedDataset;
 
             // start load timer
-            long start = System.nanoTime();
-            int wordsLoaded = 0;
+                long start = System.nanoTime();
+                int wordsLoaded = 0;
 
             // bulk load for sortedarraylist
-            if (currentStructure instanceof SortedArrayList) {
+                if (currentStructure instanceof SortedArrayList) {
 
                 SortedArrayList sa = (SortedArrayList) currentStructure;
 
@@ -229,170 +217,170 @@ public class MainUI extends JFrame {
                 // read dataset file
                 try {
 
-                    Scanner sc = new Scanner(new File(path));
-                    while (sc.hasNextLine()) {
-                        datasetWords.add(sc.nextLine());
-                    }
+                        Scanner sc = new Scanner(new File(path));
+                        while (sc.hasNextLine()) {
+                                datasetWords.add(sc.nextLine());
+                        }
 
-                    sc.close();
+                        sc.close();
 
                 } catch (Exception ex) {
 
-                    ex.printStackTrace();
+                        ex.printStackTrace();
                 }
 
                 // load words into sortedarraylist
                 sa.loadDataset(datasetWords);
                 wordsLoaded = datasetWords.size();
 
-            }
+                }
 
-            else {
+                else {
                 // load words into trie and hashmap
                 wordsLoaded = DatasetLoader.loadWords(path, currentStructure);
-            }
-            long end = System.nanoTime();
+                }
+                long end = System.nanoTime();
 
-            double loadTime = (end - start) / 1_000_000.0;
+                double loadTime = (end - start) / 1_000_000.0;
 
-            structureInfoLabel.setText(
-                    "Structure: "
-                            + selectedStructure
-                            + " | Dataset: "
-                            + selectedDataset
-                            + " | Words Loaded: "
-                            + wordsLoaded);
+                structureInfoLabel.setText(
+                        "Structure: "
+                                + selectedStructure
+                                + " | Dataset: "
+                                + selectedDataset
+                                + " | Words Loaded: "
+                                + wordsLoaded);
 
-            runtimeLabel.setText(
-                    String.format(
-                            "Load Time: %.3f ms",
-                            loadTime));
-        });
+                runtimeLabel.setText(
+                        String.format(
+                                "Load Time: %.3f ms",
+                                loadTime));
+                });
 
         // search button
         searchButton.addActionListener(e -> {
 
             // check whether dataset is loaded.
-            if (currentStructure == null) {
+                if (currentStructure == null) {
 
                 resultsArea.setText(
                         "Please load a dataset first.");
 
                 return;
-            }
+                }
 
             // get word from input.
-            String word = wordField.getText().trim();
+                String word = wordField.getText().trim();
 
             // measure search time
-            long start = System.nanoTime();
+                long start = System.nanoTime();
 
             // perform search
-            boolean found = currentStructure.search(word);
+                boolean found = currentStructure.search(word);
 
-            long end = System.nanoTime();
+                long end = System.nanoTime();
 
-            long runtime = end - start;
+                long runtime = end - start;
 
-            runtimeLabel.setText(
-                    String.format(
-                            "Search Time: %d ns",
-                            runtime));
+                runtimeLabel.setText(
+                        String.format(
+                                "Search Time: %d ns",
+                                runtime));
 
-            // display results
-            if (found) {
+                // display results
+                if (found) {
 
                 resultsArea.setText(
                         "\"" + word + "\" found.");
 
-            } else {
+                } else {
 
                 resultsArea.setText(
                         "\"" + word + "\" not found.");
-            }
+                }
         });
 
         // insert button
         insertButton.addActionListener(e -> {
 
-            if (currentStructure == null) {
+                if (currentStructure == null) {
 
                 resultsArea.setText(
                         "Please load a dataset first.");
 
                 return;
-            }
+                }
 
-            String word = wordField.getText().trim();
+                String word = wordField.getText().trim();
 
-            long start = System.nanoTime();
+                long start = System.nanoTime();
 
             // insert word
-            currentStructure.insert(word);
+                currentStructure.insert(word);
 
-            long end = System.nanoTime();
+                long end = System.nanoTime();
 
-            long runtime = end - start;
+                long runtime = end - start;
 
-            runtimeLabel.setText(
-                    String.format(
-                            "Insert Time: %d ns",
-                            runtime));
+                runtimeLabel.setText(
+                        String.format(
+                                "Insert Time: %d ns",
+                                runtime));
 
-            resultsArea.setText(
-                    "\"" + word + "\" inserted.");
-        });
+                resultsArea.setText(
+                        "\"" + word + "\" inserted.");
+                });
 
-        // delete button
-        deleteButton.addActionListener(e -> {
+                // delete button
+                deleteButton.addActionListener(e -> {
 
-            if (currentStructure == null) {
+                if (currentStructure == null) {
 
                 resultsArea.setText(
                         "Please load a dataset first.");
 
                 return;
-            }
+                }
 
-            // let the user input the word to delete.
-            String word = wordField.getText().trim();
+                // let the user input the word to delete.
+                String word = wordField.getText().trim();
 
-            long start = System.nanoTime();
+                long start = System.nanoTime();
 
-            currentStructure.delete(word);
+                currentStructure.delete(word);
 
-            long end = System.nanoTime();
+                long end = System.nanoTime();
 
-            long runtime = end - start;
+                long runtime = end - start;
 
-            runtimeLabel.setText(
-                    String.format(
-                            "Delete Time: %d ns",
-                            runtime));
+                runtimeLabel.setText(
+                        String.format(
+                                "Delete Time: %d ns",
+                                runtime));
 
-            resultsArea.setText(
-                    "\"" + word + "\" deleted.");
-        });
+                resultsArea.setText(
+                        "\"" + word + "\" deleted.");
+                });
 
         // search prefix button
         suggestionsButton.addActionListener(e -> {
 
-            if (currentStructure == null) {
+                if (currentStructure == null) {
 
                 resultsArea.setText(
                         "Please load a dataset first.");
 
                 return;
-            }
+                }
 
             // get prefix input from the user.
-            String prefix = prefixField.getText().trim();
+                String prefix = prefixField.getText().trim();
 
-            long start = System.nanoTime();
+                long start = System.nanoTime();
 
             // generate suggestions
-            List<String> suggestions = currentStructure.getSuggestions(
-                    prefix);
+                List<String> suggestions = currentStructure.getSuggestions(
+                        prefix);
 
             long end = System.nanoTime();
 
