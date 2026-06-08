@@ -103,6 +103,8 @@ Users can:
 
 A trie is a tree-based data structure where each node has exactly one character/letter and paths from the root node that eventually forms a complete word. A parent node can have many children, depending on the word being inserted. Words that share the same prefix character/letter will share the same character/letter path, which reduces duplication and improves perfomance.
 
+Each node contains a collection of child nodes stored in `HashMap(HashMap<Character, TrieNode> children)` and a boolean variable `boolean isEndOfWord = true` or `boolean isEndOfWord = false` which indicates whether the current node is the end of a word or otherwise.
+
 ### HashMap
 
 Main data structure used is a prefix hashmap which is:
@@ -112,17 +114,18 @@ Main data structure used is a prefix hashmap which is:
 This represents `prefix → (word → frequency)` so each prefix will store a hashmap which contains a word and frequency key-value.
 
 Example:
+
 `"ap" → { "apple" : 5, "app" : 3, "application" : 2 }`
 
 ### Sorted ArrayList
 
-The main data is stored inside an ArrayList<String> which the words will be stored in an alphabetical order.
+The main data is stored inside an `ArrayList<String>` which the words will be stored in an alphabetical order.
 
 Example:
 
-[“apple”, “banana”, “cat”, “dictionary”]
+`[“apple”, “banana”, “cat”, “dictionary”]`
 
-ArrayList<String> is used because of how it allows access to the variable based on the index and how it supports binary search if the data is already sorted.
+`ArrayList<String>` is used because of how it allows access to the variable based on the index and how it supports binary search if the data is already sorted.
 
 ---
 
@@ -206,4 +209,4 @@ https://docs.google.com/spreadsheets/d/1js1JTCgj572451xxZB2vJC9xbKhmUcKjTqukPu13
 
 ## References
 
-See the complete report for full APA references.
+See the complete report for full references.
