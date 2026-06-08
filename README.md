@@ -36,7 +36,7 @@ The project evaluates:
 - 📄 Data Structures Report: https://docs.google.com/document/d/1Gv1QPSBOIifG12q4DnK7RZ5Ra1F5EuOMN59h4Pf3g8c/edit?tab=t.bp0si8anjy3e
 - 📄 OOP Report: https://docs.google.com/document/d/1Gv1QPSBOIifG12q4DnK7RZ5Ra1F5EuOMN59h4Pf3g8c/edit?tab=t.0
 - 📊 Raw Benchmark Results: https://docs.google.com/spreadsheets/d/1js1JTCgj572451xxZB2vJC9xbKhmUcKjTqukPu13jJQ/edit?gid=0#gid=0
-- 📁 Dataset Source: https://github.com/dwyl/english-words
+- 📁 Dataset Source: https://github.com/dwyl/english-words, words_alpha.txt
 
 ---
 
