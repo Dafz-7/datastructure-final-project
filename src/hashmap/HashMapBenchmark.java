@@ -46,7 +46,7 @@ public class HashMapBenchmark {
 
             for (String dataset : datasets) {
 
-                HashmapSystem hashmap = new HashmapSystem();
+                HashMapSystem hashmap = new HashMapSystem();
 
                 
                 // LOAD DATASET

@@ -8,14 +8,14 @@ import java.util.*;
 
 
 
-public class HashmapSystem implements AutocompleteStructure {
+public class HashMapSystem implements AutocompleteStructure {
 
     // Main Data Structure
     private HashMap<String, HashMap<String, Integer>> prefixHashMap;
 
 
     // Constructor
-    public HashmapSystem() {
+    public HashMapSystem() {
 
         prefixHashMap = new HashMap<>();
     }

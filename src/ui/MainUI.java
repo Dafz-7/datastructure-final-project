@@ -13,7 +13,7 @@ import java.util.List;
 import interfaces.AutocompleteStructure;
 import sortedarraylist.SortedArrayList;
 import trie.Trie;
-import hashmap.HashmapSystem;
+import hashmap.HashMapSystem;
 import datasetutils.DatasetLoader;
 import benchmark.BenchmarkResult;
 import benchmark.BenchmarkRunner;
@@ -188,7 +188,7 @@ public class MainUI extends JFrame {
                         break;
 
                 case "HashMap":
-                        currentStructure = new HashmapSystem();
+                        currentStructure = new HashMapSystem();
 
                         break;
 
@@ -433,7 +433,7 @@ public class MainUI extends JFrame {
 
                 case "HashMap":
 
-                    benchmarkStructure = new HashmapSystem();
+                    benchmarkStructure = new HashMapSystem();
 
                     break;
 
