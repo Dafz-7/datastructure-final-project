@@ -106,12 +106,13 @@ A trie is a tree-based data structure where each node has exactly one character/
 ### HashMap
 
 Main data structure used is a prefix hashmap which is:
-Hashmap<String, Hashmap<String, Integer>> 
 
-This represents prefix → (word → frequency) so each prefix will store a hashmap which contains a word and frequency key-value.
+`Hashmap<String, Hashmap<String, Integer>>`
+
+This represents `prefix → (word → frequency)` so each prefix will store a hashmap which contains a word and frequency key-value.
 
 Example:
-"ap" → { "apple" : 5, "app" : 3, "application" : 2 } 
+`"ap" → { "apple" : 5, "app" : 3, "application" : 2 }`
 
 ### Sorted ArrayList
 
