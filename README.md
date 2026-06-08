@@ -5,7 +5,7 @@
 </p>
 
 ![Java](https://img.shields.io/badge/Java-Latest-orange)
-![Course](https://img.shields.io/badge/Course-Data%20Structures-blue)
+![Courses](https://img.shields.io/badge/Courses-Data%20Structures%20%7C%20OOP-blue)
 ![Status](https://img.shields.io/badge/Status-Completed-green)
 
 ---
