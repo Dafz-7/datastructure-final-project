@@ -16,18 +16,18 @@ To determine which data structure performs the best in an autocomplete system ba
 ## Team Members and Division
 Each member has their own responsibilities contributing to the project, as follows:
 
-MUHAMMAD DAFI ARIB ASYROFI (2902718944) - Trie
+MUHAMMAD DAFI ARIB ASYROFI (2902718944) - Trie  
 He is responsible for:
-Implementing the Trie data structure and working on the Trie report.
+Implementing the Trie data structure and working on the Trie report.  
 Contributes implementing the UI.
 Initialized GitHub repository.
 
-FEBRIAN HALIESIUS (2902724745) - HashMap
+FEBRIAN HALIESIUS (2902724745) - HashMap  
 He is responsible for: 
 Implementing the HashMap data structure and working on the HashMap report.
 Contributes implementing the UI.
 
-RENJIRO KUNIO HANDOKO (2902740591) - Sorted ArrayList
+RENJIRO KUNIO HANDOKO (2902740591) - Sorted ArrayList  
 He is responsible for:
 Implementing the Sorted ArrayList data structure and working on the Sorted ArrayList report.
 Contributes implementing the UI.
