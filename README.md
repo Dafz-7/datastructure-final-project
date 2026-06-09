@@ -29,6 +29,12 @@ The project evaluates:
 - Scalability
 - Theoretical time complexity vs Final time complexity
 
+Note that the testing will take place in Renji’s PC with these specifications:
+
+- CPU: AMD Ryzen 5 5600 6-Core Processor (12 CPUs), ~3.5GHz
+- Memory: 16384MB RAM
+- Operating System: Windows 11 pro 64-bit (10.0, Build 26200)
+
 ---
 
 ## Quick Links
