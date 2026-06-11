@@ -1,3 +1,5 @@
+// this class is for hashmap structure benchmark (febri).
+
 package hashmap;
 
 import datasetutils.DatasetLoader;
@@ -44,7 +46,7 @@ public class HashMapBenchmark {
 
             for (String dataset : datasets) {
 
-                HashmapSystem hashmap = new HashmapSystem();
+                HashMapSystem hashmap = new HashMapSystem();
 
                 
                 // LOAD DATASET

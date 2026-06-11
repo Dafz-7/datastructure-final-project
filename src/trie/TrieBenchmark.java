@@ -1,3 +1,6 @@
+// this class is for trie structure benchmark (rofi).
+// codes are similar to BenchmarkRunner.java and other benchmark files.
+
 package trie;
 
 import datasetutils.DatasetLoader;
@@ -9,31 +12,26 @@ public class TrieBenchmark {
     public static void main(String[] args) {
 
         String[] datasets = {
-                "words_100.txt",
-                "words_1000.txt",
-                "words_10000.txt",
-                "words_20000.txt",
-                "words_50000.txt",
-                "words_75000.txt",
-                "words_100000.txt",
-                "words_200000.txt",
-                "words_300000.txt"
+            "words_100.txt",
+            "words_1000.txt",
+            "words_10000.txt",
+            "words_20000.txt",
+            "words_50000.txt",
+            "words_75000.txt",
+            "words_100000.txt",
+            "words_200000.txt",
+            "words_300000.txt"
         };
 
-        // ==========================================
-        // REPEAT WHOLE BENCHMARK 2 TIMES
-        // ==========================================
-
+        
+        // benchmarks are repeated 3 times.
         for (int run = 1; run <= 3; run++) {
 
-            System.out.println(
-                    "\n========================================================");
+            System.out.println("\n========================================================");
 
-            System.out.println(
-                    "BENCHMARK RUN #" + run);
+            System.out.println("BENCHMARK RUN #" + run);
 
-            System.out.println(
-                    "========================================================");
+            System.out.println("========================================================");
 
             System.out.printf(
                     "%-15s %-12s %-12s %-12s %-12s %-12s %-12s%n",
@@ -45,149 +43,100 @@ public class TrieBenchmark {
                     "Delete(ns)",
                     "Memory(MB)");
 
-            System.out.println(
-                    "---------------------------------------------------------------------------------------------");
+            System.out.println("---------------------------------------------------------------------------------------------");
 
-            // ==========================================
-            // LOOP THROUGH DATASETS
-            // ==========================================
-
+            // loop through datasets
             for (String dataset : datasets) {
 
                 Trie trie = new Trie();
 
-                // ==========================
-                // LOAD DATASET
-                // ==========================
-
+                
+                // load dataset
                 long startLoad = System.nanoTime();
 
-                DatasetLoader.loadWords(
-                        "dataset/" + dataset,
-                        trie);
+                DatasetLoader.loadWords("dataset/" + dataset, trie);
 
                 long endLoad = System.nanoTime();
 
-                double loadTime =
-                        (endLoad - startLoad)
-                                / 1_000_000.0;
+                double loadTime = (endLoad - startLoad) / 1_000_000.0;
 
-                // ==========================
-                // MEMORY USAGE
-                // ==========================
-
-                Runtime runtime =
-                        Runtime.getRuntime();
+                
+                // memory usage
+                Runtime runtime = Runtime.getRuntime();
 
                 runtime.gc();
 
-                long usedMemory =
-                        runtime.totalMemory()
-                                - runtime.freeMemory();
+                long usedMemory = runtime.totalMemory() - runtime.freeMemory();
 
-                double memoryMB =
-                        usedMemory
-                                / (1024.0 * 1024.0);
+                double memoryMB = usedMemory / (1024.0 * 1024.0);
 
-                // ==========================
-                // SEARCH BENCHMARK
-                // ==========================
+                
+                // search benchmark
+                long startSearch = System.nanoTime();
 
-                long startSearch =
-                        System.nanoTime();
-
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
 
                     trie.search("antineutrino");
+
                 }
 
-                long endSearch =
-                        System.nanoTime();
+                long endSearch = System.nanoTime();
 
-                double avgSearch =
-                        (endSearch - startSearch)
-                                / (double) ITERATIONS;
+                double avgSearch = (endSearch - startSearch) / (double) ITERATIONS;
 
-                // ==========================
-                // PREFIX SEARCH BENCHMARK
-                // ==========================
+                
+                // prefix search benchmark
+                long startPrefix = System.nanoTime();
 
-                long startPrefix =
-                        System.nanoTime();
-
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
 
                     trie.getSuggestions("sh");
+
                 }
 
-                long endPrefix =
-                        System.nanoTime();
+                long endPrefix = System.nanoTime();
 
-                double avgPrefix =
-                        (endPrefix - startPrefix)
-                                / (double) ITERATIONS;
+                double avgPrefix = (endPrefix - startPrefix) / (double) ITERATIONS;
 
-                // ==========================
-                // INSERT BENCHMARK
-                // ==========================
+                
+                // insert benchmark
+                long startInsert = System.nanoTime();
 
-                long startInsert =
-                        System.nanoTime();
+                for (int i = 0; i < ITERATIONS; i++) {
 
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                    trie.insert("benchmarkInsert" + i);
 
-                    trie.insert(
-                            "benchmarkInsert" + i);
                 }
 
-                long endInsert =
-                        System.nanoTime();
+                long endInsert = System.nanoTime();
 
-                double avgInsert =
-                        (endInsert - startInsert)
-                                / (double) ITERATIONS;
+                double avgInsert = (endInsert - startInsert) / (double) ITERATIONS;
 
-                // ==========================
-                // DELETE BENCHMARK
-                // ==========================
+                
+                // deletion benchmark.
+                long startDelete = System.nanoTime();
 
-                long startDelete =
-                        System.nanoTime();
+                for (int i = 0; i < ITERATIONS; i++) {
 
-                for (int i = 0;
-                     i < ITERATIONS;
-                     i++) {
+                    trie.delete("benchmarkInsert" + i);
 
-                    trie.delete(
-                            "benchmarkInsert" + i);
                 }
 
-                long endDelete =
-                        System.nanoTime();
+                long endDelete = System.nanoTime();
 
-                double avgDelete =
-                        (endDelete - startDelete)
-                                / (double) ITERATIONS;
+                double avgDelete = (endDelete - startDelete) / (double) ITERATIONS;
 
-                // ==========================
-                // PRINT RESULTS
-                // ==========================
-
+                
+                // print the results.
                 System.out.printf(
-                        "%-15s %-12.3f %-12.2f %-12.2f %-12.2f %-12.2f %-12.2f%n",
-                        dataset,
-                        loadTime,
-                        avgSearch,
-                        avgPrefix,
-                        avgInsert,
-                        avgDelete,
-                        memoryMB);
+                    "%-15s %-12.3f %-12.2f %-12.2f %-12.2f %-12.2f %-12.2f%n",
+                    dataset,
+                    loadTime,
+                    avgSearch,
+                    avgPrefix,
+                    avgInsert,
+                    avgDelete,
+                    memoryMB);
             }
         }
     }

@@ -1,3 +1,5 @@
+// this class is for sortedarraylist structure (renji).
+
 package sortedarraylist;
 
 import java.util.*;
