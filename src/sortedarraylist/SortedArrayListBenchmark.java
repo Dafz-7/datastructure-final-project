@@ -136,9 +136,7 @@ public class SortedArrayListBenchmark {
 
                 double avgDelete = (endDelete - startDelete) / (double) ITERATIONS;
 
-                // ==========================
-                // PRINT RESULT ROW
-                // ==========================
+                // Print results in a row
 
                 System.out.printf(
                         "%-15s %-12.3f %-12.2f %-12.2f %-12.2f %-12.2f %-12.2f%n",

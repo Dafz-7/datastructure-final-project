@@ -85,7 +85,7 @@ public class SortedArrayList implements AutocompleteStructure {
             if (word.startsWith(prefix)) {
                 results.add(word);
             } else {
-                break;
+                break; // means no more matches in the next scan
             }
         }
 
@@ -93,7 +93,7 @@ public class SortedArrayList implements AutocompleteStructure {
     }
 
 
-    // Find initial prefix
+    // Find initial prefix using binary search
 
     private int findInitialPrefix(String prefix) {
 
