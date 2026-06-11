@@ -73,7 +73,7 @@ The image above shows the entirety of the system architecture. First, the user c
   <img src="assets/unified_classdiagram.png" width="950">
 </p>
 
-The image above shows the unified diagram of the system. In addition to figure 2, the Trie class contains TrieNode objects through a composition relationship, while BenchmarkRunner and DatasetLoader provide benchmarking and dataset management functionalities and other classes doing their functions.
+The image above shows the unified diagram of the system. In addition to the image above, the Trie class contains TrieNode objects through a composition relationship, while BenchmarkRunner and DatasetLoader provide benchmarking and dataset management functionalities and other classes doing their functions.
 
 ---
 
@@ -83,7 +83,7 @@ The image above shows the unified diagram of the system. In addition to figure 2
   <img src="assets/ui_design.png" width="850">
 </p>
 
-The image above shows the graphical user interface for the autocomplete program made using Java Swing (Runestone Academy, n.d.). As shown in figure 4, users can select a data structure (Trie, HashMap, or Sorted ArrayList) and select dataset (100, 1k, 10k, 20k, 50k, 75k, 100k, 200k, and 300k) to load into the selected data structure. After dataset has been loaded, user can type a word and perform the selected operations (search/exact lookup, insert, and delete). Users can also type letters in the prefix placeholder (for example, “ap”) and click the “Get Suggestions” button to get the words that start with the typed letter “ap” in the result area. Users can also click the “Clear Results” button to clear whatever printed out in the result area for clarity (Bro Code, 2020). All of this are learnt from the youtube video which can be accessed here: https://www.youtube.com/watch?v=Kmgo00avvEw and with the little help of some internet searching, same applies with the implementation process of the 3 data structures here in the report and the code.
+The image above shows the graphical user interface for the autocomplete program made using Java Swing (Runestone Academy, n.d.). As shown in image above, users can select a data structure (Trie, HashMap, or Sorted ArrayList) and select dataset (100, 1k, 10k, 20k, 50k, 75k, 100k, 200k, and 300k) to load into the selected data structure. After dataset has been loaded, user can type a word and perform the selected operations (search/exact lookup, insert, and delete). Users can also type letters in the prefix placeholder (for example, “ap”) and click the “Get Suggestions” button to get the words that start with the typed letter “ap” in the result area. Users can also click the “Clear Results” button to clear whatever printed out in the result area for clarity (Bro Code, 2020). All of this are learnt from the youtube video which can be accessed here: https://www.youtube.com/watch?v=Kmgo00avvEw and with the little help of some internet searching, same applies with the implementation process of the 3 data structures here in the report and the code.
 
 
 Users can:
